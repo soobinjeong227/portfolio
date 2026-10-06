@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soobin Jeong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #111111;
+    --muted: #9a9a9a;
+    --tile: #ececec;
+    --gap: 8px;
+    --pad: 12px;
+    --cols: 4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Inter Tight", system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* Header */
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 10;
+    display: grid; grid-template-columns: 1fr 1fr;
+    padding: var(--pad);
+    background: var(--bg);
+  }
+  header nav { display: grid; grid-template-columns: repeat(4, 1fr); }
+  header nav > *:not(:first-child) { text-align: right; }
+  header nav a:hover, header nav button:hover { color: var(--muted); }
+  #clock { font-variant-numeric: tabular-nums; }
+
+  /* Intro */
+  .intro {
+    min-height: 62vh;
+    display: flex; align-items: center;
+    padding: 80px var(--pad) 40px;
+  }
+  .intro p { font-size: clamp(22px, 2.6vw, 34px); line-height: 1.15; max-width: 16em; letter-spacing: -0.01em; }
+
+  /* Project */
+  .project { padding: 0 var(--pad) 72px; }
+  .project-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0;
+  }
+  .project-title { display: flex; align-items: center; gap: 4px; }
+  .project-title .meta { color: var(--muted); }
+  .toggle {
+    width: 18px; height: 18px; margin-left: 6px;
+    font-size: 18px; line-height: 18px; font-weight: 400;
+    transition: transform .35s cubic-bezier(.2,.7,.2,1);
+  }
+  .project.open .toggle { transform: rotate(45deg); }
+  .desc {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .desc > div { overflow: hidden; }
+  .desc p { max-width: 38em; padding: 4px 0 16px; font-size: 15px; line-height: 1.35; }
+  .project.open .desc { grid-template-rows: 1fr; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    gap: var(--gap);
+  }
+  figure { display: flex; flex-direction: column; gap: 6px; }
+  .media {
+    aspect-ratio: 4 / 5; width: 100%;
+    background: var(--tile); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 11px; letter-spacing: .04em;
+  }
+  .media img, .media video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  figure:hover .media img { transform: scale(1.03); }
+  figcaption { font-size: 10px; letter-spacing: .03em; text-transform: uppercase; }
+
+  /* Density switch */
+  .density { display: flex; gap: 4px; }
+  .density button {
+    width: 14px; height: 12px;
+    display: grid; gap: 1.5px; opacity: .3;
+  }
+  .density button.active { opacity: 1; }
+  .density button span { background: var(--fg); }
+  .density [data-cols="2"] { grid-template-columns: repeat(2, 1fr); }
+  .density [data-cols="4"] { grid-template-columns: repeat(3, 1fr); }
+  .density [data-cols="6"] { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+
+  /* Info panel */
+  .panel {
+    position: fixed; inset: 0; z-index: 20;
+    background: var(--bg);
+    padding: 80px var(--pad) var(--pad);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s;
+  }
+  .panel.show { opacity: 1; pointer-events: auto; }
+  .panel h2 { font-size: 13px; font-weight: 400; color: var(--muted); margin-bottom: 10px; }
+  .panel p { font-size: clamp(18px, 1.8vw, 24px); line-height: 1.2; max-width: 22em; margin-bottom: 1em; }
+  .panel ul { list-style: none; font-size: 15px; line-height: 1.6; }
+  .panel .close { position: fixed; top: var(--pad); right: var(--pad); z-index: 21; }
+
+  /* ---- Motion ---- */
+  :root { --ease: cubic-bezier(.2,.7,.2,1); }
+  header { animation: fadeIn .8s var(--ease) both; }
+  @keyframes fadeIn { from { opacity: 0; } }
+
+  /* Intro words rise from a mask */
+  .intro .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; }
+  .intro .w > span { display: inline-block; transform: translateY(105%); transition: transform 1s var(--ease); transition-delay: var(--d); }
+  .intro.in .w > span { transform: none; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(28px); filter: blur(8px);
+    transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease);
+    transition-delay: var(--d, 0ms); }
+  .reveal.in { opacity: 1; transform: none; filter: none; }
+
+  /* Sticky project bar */
+  .project-bar { position: sticky; top: 41px; z-index: 5; background: var(--bg); }
+  .grid { align-items: start; }
+
+  /* Info panel stagger */
+  .panel > div > * { opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .panel.show > div > * { opacity: 1; transform: none; }
+  .panel.show > div > *:nth-child(2) { transition-delay: 60ms; }
+  .panel.show > div > *:nth-child(3) { transition-delay: 120ms; }
+  .panel.show > div > *:nth-child(n+4) { transition-delay: 180ms; }
+  .panel.show > div:nth-child(3) > * { transition-delay: 150ms; }
+
+  /* Underline hover on nav */
+  header a, header button { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .4s var(--ease), color .2s; }
+  header a:hover, header button:hover { background-size: 100% 1px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal, .intro .w > span, .panel > div > * { opacity: 1 !important; transform: none !important; filter: none !important; }
+  }
+
+  footer {
+    display: flex; justify-content: space-between;
+    padding: 24px var(--pad) var(--pad);
+    color: var(--muted);
+  }
+
+  /* ---- Burger + mobile menu (hidden on desktop) ---- */
+  .burger { display: none; position: relative; width: 28px; height: 28px; margin: -6px -2px -6px 0; z-index: 31; }
+  .burger span { position: absolute; left: 3px; right: 3px; height: 1.5px; background: var(--fg);
+    transition: transform .45s var(--ease), top .45s var(--ease); }
+  .burger span:nth-child(1) { top: 10px; }
+  .burger span:nth-child(2) { top: 17px; }
+  body.menu-open .burger span:nth-child(1) { top: 13.5px; transform: rotate(45deg); }
+  body.menu-open .burger span:nth-child(2) { top: 13.5px; transform: rotate(-45deg); }
+
+  .menu { position: fixed; inset: 0; z-index: 30; background: var(--bg);
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 72px var(--pad) var(--pad);
+    clip-path: inset(0 0 100% 0); transition: clip-path .6s var(--ease); }
+  body.menu-open .menu { clip-path: inset(0 0 0 0); }
+  .menu nav { display: flex; flex-direction: column; gap: 4px; }
+  .menu nav > * { font-size: 40px; line-height: 1.05; letter-spacing: -0.02em; text-align: left;
+    opacity: 0; transform: translateY(24px); transition: opacity .5s var(--ease), transform .6s var(--ease); }
+  body.menu-open .menu nav > * { opacity: 1; transform: none; }
+  body.menu-open .menu nav > *:nth-child(1) { transition-delay: .15s; }
+  body.menu-open .menu nav > *:nth-child(2) { transition-delay: .2s; }
+  body.menu-open .menu nav > *:nth-child(3) { transition-delay: .25s; }
+  .menu .menu-foot { display: flex; justify-content: space-between; color: var(--muted); }
+  body.menu-open { overflow: hidden; }
+
+  /* ---- Tablet ---- */
+  @media (max-width: 1024px) {
+    :root { --pad: 15px; --gap: 10px; }
+    body { font-size: 15px; }
+    header { grid-template-columns: 1fr auto; align-items: center; z-index: 40; }
+    header > nav { display: none; }
+    .burger { display: block; }
+    .intro { min-height: 55vh; }
+    .intro p { font-size: 24px; max-width: 18em; }
+    .project-bar { top: 50px; }
+    .density { display: none; }
+    .grid { grid-template-columns: repeat(2, 1fr) !important; }
+    figcaption { font-size: 9px; }
+    .panel { grid-template-columns: 1fr; overflow-y: auto; padding-top: 72px; z-index: 35; }
+    .panel .close { display: none; }
+  }
+
+  /* ---- Mobile ---- */
+  @media (max-width: 600px) {
+    .intro { min-height: 70vh; align-items: flex-end; padding-bottom: 48px; }
+    .intro p { font-size: 22px; }
+    .project-title { flex-wrap: wrap; }
+    .desc p { font-size: 14px; }
+    .menu nav > * { font-size: 34px; }
+    .panel p { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#">Soobin Jeong</a>
+  <nav>
+    <span id="clock">00:00:00 NY</span>
+    <button data-open="info">Information</button>
+    <a href="#playground">Playground</a>
+    <a href="mailto:you@example.com">Contact</a>
+  </nav>
+  <button class="burger" aria-label="Menu"><span></span><span></span></button>
+</header>
+
+<div class="menu">
+  <nav>
+    <button data-open="info">Information</button>
+    <a href="#playground">Playground</a>
+    <a href="mailto:you@example.com">Contact</a>
+  </nav>
+  <div class="menu-foot"><span class="clock-m"></span><span>© 2026</span></div>
+</div>
+
+<main>
+  <section class="intro">
+    <p>Soobin Jeong is an architectural designer working at the intersection of space, material and fabrication.</p>
+  </section>
+
+  <div id="projects"></div>
+</main>
+
+<footer>
+  <span>© 2026 Soobin Jeong</span>
+  <a href="#">Back to top ↑</a>
+</footer>
+
+<section class="panel" id="info">
+  <button class="close" data-close>Close</button>
+  <div>
+    <h2>About</h2>
+    <p>Write a short bio here — your background, what you study at Columbia, and what kind of work interests you.</p>
+    <p>Currently based in New York.</p>
+  </div>
+  <div>
+    <h2>Education</h2>
+    <ul>
+      <li>Columbia University — M.Arch, 2026–</li>
+      <li>Previous school — Degree, Year</li>
+    </ul>
+    <br>
+    <h2>Contact</h2>
+    <ul>
+      <li><a href="mailto:you@example.com">you@example.com</a></li>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">LinkedIn</a></li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  // ---- Edit your projects here ----
+  // Each item: "NAME" or { name, src?, ratio? } — src: "images/xxx.jpg" (or .mp4), ratio: "4/5", "1/1", "3/4"...
+  const PROJECTS = [
+    {
+      title: "Fabrication", category: "Week 01", year: 2026,
+      desc: "Describe the project: the brief, your process, materials and tools, and what you learned.",
+      items: ["FAB_01.JPG", "FAB_02.JPG", "FAB_03.MP4", "FAB_04.JPG", "FAB_05.JPG", "FAB_06.JPG"]
+    },
+    {
+      title: "Studio Project", category: "Architecture", year: 2026,
+      desc: "A short paragraph about the site, the concept, and the key design moves.",
+      items: ["STD_01.JPG", "STD_02.JPG", "STD_03.JPG", "STD_04.JPG", "STD_05.JPG", "STD_06.JPG", "STD_07.JPG", "STD_08.JPG"]
+    },
+    {
+      title: "Material Study", category: "Research", year: 2025,
+      desc: "Explain the question you were exploring and the experiments you made.",
+      items: ["MAT_01.JPG", "MAT_02.JPG", "MAT_03.JPG", "MAT_04.JPG"]
+    }
+  ];
+
+  const root = document.getElementById("projects");
+  const densityIcon = n => `<button data-cols="${n}" aria-label="${n} columns">${"<span></span>".repeat(n === 2 ? 2 : n === 4 ? 3 : 6)}</button>`;
+
+  PROJECTS.forEach(p => {
+    const el = document.createElement("section");
+    el.className = "project";
+    el.innerHTML = `
+      <div class="project-bar">
+        <div class="project-title">
+          <span>${p.title},</span><span class="meta">${p.category}, ${p.year}</span>
+          <button class="toggle" aria-label="Toggle description">+</button>
+        </div>
+        <div class="density">${densityIcon(2)}${densityIcon(4)}${densityIcon(6)}</div>
+      </div>
+      <div class="desc"><div><p>${p.desc}</p></div></div>
+      <div class="grid">
+        ${p.items.map((it, i) => {
+          const item = typeof it === "string" ? { name: it } : it;
+          const ratio = item.ratio || ["4/5", "4/5", "1/1", "4/5", "3/4", "4/5"][i % 6];
+          let inner = item.name;
+          if (item.src) inner = /\.mp4$/i.test(item.src)
+            ? `<video src="${item.src}" autoplay muted loop playsinline></video>`
+            : `<img src="${item.src}" alt="${item.name}" loading="lazy">`;
+          return `<figure class="reveal" style="--d:${(i % 4) * 80}ms"><div class="media" style="aspect-ratio:${ratio}">${inner}</div><figcaption>${item.name}</figcaption></figure>`;
+        }).join("")}
+      </div>`;
+    const grid = el.querySelector(".grid");
+    el.querySelector(".toggle").onclick = () => el.classList.toggle("open");
+    el.querySelectorAll(".density button").forEach(b => {
+      if (b.dataset.cols === "4") b.classList.add("active");
+      b.onclick = () => {
+        // FLIP: measure, change layout, animate from old positions
+        const figs = [...grid.children];
+        const before = figs.map(f => f.getBoundingClientRect());
+        grid.style.setProperty("--cols", b.dataset.cols);
+        el.querySelectorAll(".density button").forEach(x => x.classList.toggle("active", x === b));
+        figs.forEach((f, i) => {
+          const a = before[i], z = f.getBoundingClientRect();
+          f.animate([
+            { transformOrigin: "0 0", transform: `translate(${a.left - z.left}px, ${a.top - z.top}px) scale(${a.width / z.width})` },
+            { transformOrigin: "0 0", transform: "none" }
+          ], { duration: 650, easing: "cubic-bezier(.2,.7,.2,1)", delay: i * 12 });
+        });
+      };
+    });
+    root.appendChild(el);
+  });
+
+  // Intro: split into words and stagger them up
+  const intro = document.querySelector(".intro");
+  const ip = intro.querySelector("p");
+  ip.innerHTML = ip.textContent.trim().split(/\s+/)
+    .map((w, i) => `<span class="w"><span style="--d:${200 + i * 45}ms">${w}</span></span>`).join(" ");
+  requestAnimationFrame(() => requestAnimationFrame(() => intro.classList.add("in")));
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  }), { rootMargin: "0px 0px -8% 0px" });
+  document.querySelectorAll(".reveal").forEach(n => io.observe(n));
+
+  // NY clock
+  const clock = document.getElementById("clock");
+  const clockM = document.querySelector(".clock-m");
+  const tick = () => clockM.textContent = clock.textContent = new Date().toLocaleTimeString("en-GB", { timeZone: "America/New_York", hour12: false }) + " NY";
+  tick(); setInterval(tick, 1000);
+
+  // Burger menu (tablet / mobile)
+  const body = document.body;
+  document.querySelector(".burger").onclick = () => {
+    if (panel.classList.contains("show")) { panel.classList.remove("show"); body.classList.remove("menu-open"); return; }
+    body.classList.toggle("menu-open");
+  };
+  document.querySelectorAll(".menu a").forEach(a => a.onclick = () => body.classList.remove("menu-open"));
+
+  // Info panel
+  const panel = document.getElementById("info");
+  document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => panel.classList.add("show"));
+  panel.querySelector("[data-close]").onclick = () => panel.classList.remove("show");
+  addEventListener("keydown", e => { if (e.key === "Escape") { panel.classList.remove("show"); body.classList.remove("menu-open"); } });
+</script>
+</body>
+</html>
