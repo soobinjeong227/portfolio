@@ -69,6 +69,15 @@
   .desc > div { overflow: hidden; }
   .desc p { max-width: 38em; padding: 4px 0 16px; font-size: 15px; line-height: 1.35; }
   .project.open .desc { grid-template-rows: 1fr; }
+  .plist { list-style: none; max-width: 980px; margin: 0 0 20px; border-top: 1px solid #e6e6e6; }
+  .plist li { display: grid; grid-template-columns: 1.3fr 1fr .6fr 2.4fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid #e6e6e6; }
+  .plist .meta { color: var(--muted); }
+  @media (max-width: 720px) {
+    .plist li { grid-template-columns: 1fr auto; gap: 2px 12px; }
+    .plist li > :nth-child(2) { grid-column: 1; grid-row: 2; }
+    .plist li > :nth-child(3) { grid-column: 2; grid-row: 1; }
+    .plist .note { grid-column: 1 / -1; }
+  }
 
   .grid {
     display: grid;
@@ -77,7 +86,7 @@
   }
   figure { display: flex; flex-direction: column; gap: 6px; }
   .media {
-    aspect-ratio: 4 / 5; width: 100%;
+    aspect-ratio: 4 / 3; width: 100%;
     background: var(--tile); overflow: hidden;
     display: flex; align-items: center; justify-content: center;
     color: var(--muted); font-size: 11px; letter-spacing: .04em;
@@ -267,23 +276,26 @@
 </section>
 
 <script>
-  // ---- Edit your projects here ----
-  // Each item: "NAME" or { name, src?, ratio? } — src: "images/xxx.jpg" (or .mp4), ratio: "4/5", "1/1", "3/4"...
+  // ---- Edit your work here ----
+  // Each section is a period. projects: listed under the description when "+" is opened.
+  // Each item: { name, src?, ratio? } — name is the caption (project name), src: "images/xxx.jpg" (or .mp4); ratio defaults to "4/3"
   const PROJECTS = [
     {
-      title: "Fabrication", category: "Week 01", year: 2026,
-      desc: "Describe the project: the brief, your process, materials and tools, and what you learned.",
-      items: ["FAB_01.JPG", "FAB_02.JPG", "FAB_03.MP4", "FAB_04.JPG", "FAB_05.JPG", "FAB_06.JPG"]
-    },
-    {
-      title: "Studio Project", category: "Architecture", year: 2026,
-      desc: "A short paragraph about the site, the concept, and the key design moves.",
-      items: ["STD_01.JPG", "STD_02.JPG", "STD_03.JPG", "STD_04.JPG", "STD_05.JPG", "STD_06.JPG", "STD_07.JPG", "STD_08.JPG"]
-    },
-    {
-      title: "Material Study", category: "Research", year: 2025,
-      desc: "Explain the question you were exploring and the experiments you made.",
-      items: ["MAT_01.JPG", "MAT_02.JPG", "MAT_03.JPG", "MAT_04.JPG"]
+      title: "SIAPLAN — BIM Team", category: "Technical Session", year: "2023–2026",
+      desc: "At SIAPLAN Architects & Planners in Seoul, I worked in the Technical Session / BIM Team, producing Revit-based design development and construction documentation and leading architectural and structural BIM coordination, including clash detection and model QA/QC.",
+      projects: [
+        ["Chungnam Arts Center", "Competition → CD / Revit", "2025–2026", "Performing arts complex. Prepared the competition report with 3XN, then led structural coordination and architectural/structural Revit models."],
+        ["Yuhan Corporation Remodeling", "CD / Revit", "2024–2025", "Adaptive reuse preserving the existing facade and structure. Coordinated facade design, drawings and Revit models."],
+        ["Gwanggyo Central Plaza", "DD / Revit", "2024", "Underground facilities and above-grade landscape for an urban plaza expansion."],
+        ["Jeju Jungmun Integrated Resort", "Permitting / Revit", "2023", "Architectural design and drawings for the overall resort during design review and permitting."],
+        ["Residential Projects", "Structural Review / BIM", "2023–2026", "Doryong-dong, Seongdwi Village, Seongnam Bokjeong B3, Gwangju Central Park."]
+      ],
+      items: [
+        { name: "Chungnam Arts Center", src: "images/CNAC_01.jpg" },
+        { name: "Yuhan Corporation Remodeling", src: "images/YUHAN_01.jpg" },
+        { name: "Gwanggyo Central Plaza" },
+        { name: "Jeju Jungmun Integrated Resort" }
+      ]
     }
   ];
 
@@ -301,11 +313,15 @@
         </div>
         <div class="density">${densityIcon(2)}${densityIcon(4)}${densityIcon(6)}</div>
       </div>
-      <div class="desc"><div><p>${p.desc}</p></div></div>
+      <div class="desc"><div>
+        <p>${p.desc}</p>
+        ${p.projects ? `<ul class="plist">${p.projects.map(([n, phase, yr, note]) =>
+          `<li><span>${n}</span><span class="meta">${phase}</span><span class="meta">${yr}</span><span class="note">${note}</span></li>`).join("")}</ul>` : ""}
+      </div></div>
       <div class="grid">
         ${p.items.map((it, i) => {
           const item = typeof it === "string" ? { name: it } : it;
-          const ratio = item.ratio || ["4/5", "4/5", "1/1", "4/5", "3/4", "4/5"][i % 6];
+          const ratio = item.ratio || "4/3";
           let inner = item.name;
           if (item.src) inner = /\.mp4$/i.test(item.src)
             ? `<video src="${item.src}" autoplay muted loop playsinline></video>`
