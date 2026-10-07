@@ -95,6 +95,26 @@
   figure:hover .media img { transform: scale(1.03); }
   figcaption { font-size: 10px; letter-spacing: .03em; text-transform: uppercase; }
 
+  figure > a { display: flex; flex-direction: column; gap: 6px; }
+  .plist a:hover, .back:hover, .next:hover span:last-child { color: var(--muted); }
+
+  /* Project page */
+  .detail { padding: 72px var(--pad) 40px; animation: fadeIn .6s var(--ease) both; }
+  .detail .back { display: inline-block; margin-bottom: 32px; }
+  .detail-head { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 56px; }
+  .detail-head h1 { font-size: clamp(28px, 3.4vw, 46px); font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; }
+  .detail-head h1 .meta { display: block; margin-top: 8px; font-size: 15px; letter-spacing: 0; color: var(--muted); }
+  .detail-head dl { display: grid; grid-template-columns: 7em 1fr; gap: 6px 12px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #e6e6e6; }
+  .detail-head dt { color: var(--muted); }
+  .detail-head p { font-size: 15px; line-height: 1.4; max-width: 36em; margin-bottom: .8em; }
+  .detail-media { display: grid; gap: 24px; }
+  .next { display: flex; flex-direction: column; gap: 4px; margin-top: 72px; padding-top: 16px; border-top: 1px solid #e6e6e6; font-size: clamp(22px, 2.4vw, 32px); letter-spacing: -0.01em; }
+  .next .meta { font-size: 13px; letter-spacing: 0; color: var(--muted); }
+  footer button { color: var(--muted); }
+  @media (max-width: 720px) {
+    .detail-head { grid-template-columns: 1fr; margin-bottom: 32px; }
+  }
+
   /* Density switch */
   .density { display: flex; gap: 4px; }
   .density button {
@@ -239,7 +259,7 @@
   <div class="menu-foot"><span class="clock-m"></span><span>© 2026</span></div>
 </div>
 
-<main>
+<main id="home">
   <section class="intro">
     <p>Soobin Jeong is an architectural designer working at the intersection of space, material and fabrication.</p>
   </section>
@@ -247,9 +267,11 @@
   <div id="projects"></div>
 </main>
 
+<main id="detail" class="detail" hidden></main>
+
 <footer>
   <span>© 2026 Soobin Jeong</span>
-  <a href="#">Back to top ↑</a>
+  <button onclick="scrollTo({ top: 0, behavior: 'smooth' })">Back to top ↑</button>
 </footer>
 
 <section class="panel" id="info">
@@ -281,23 +303,293 @@
   // Each item: { name, src?, ratio? } — name is the caption (project name), src: "images/xxx.jpg" (or .mp4); ratio defaults to "4/3"
   const PROJECTS = [
     {
-      title: "SIAPLAN — BIM Team", category: "Technical Session", year: "2023–2026",
-      desc: "At SIAPLAN Architects & Planners in Seoul, I worked in the Technical Session / BIM Team, producing Revit-based design development and construction documentation and leading architectural and structural BIM coordination, including clash detection and model QA/QC.",
+      title: "SIAPLAN Architects & Planners", category: "Architectural Designer / BIM Coordinator", year: "2021–2026",
+      desc: "Five years at SIAPLAN in Seoul. In the Technical Session / BIM Team (2023–2026), I produced Revit-based design development and construction documentation and led architectural and structural BIM coordination, including clash detection and model QA/QC. In the Design Competition Team (2021–2022), I developed competition designs and led competition reports and presentation materials.",
       projects: [
         ["Chungnam Arts Center", "Competition → CD / Revit", "2025–2026", "Performing arts complex. Prepared the competition report with 3XN, then led structural coordination and architectural/structural Revit models."],
         ["Yuhan Corporation Remodeling", "CD / Revit", "2024–2025", "Adaptive reuse preserving the existing facade and structure. Coordinated facade design, drawings and Revit models."],
         ["Gwanggyo Central Plaza", "DD / Revit", "2024", "Underground facilities and above-grade landscape for an urban plaza expansion."],
         ["Jeju Jungmun Integrated Resort", "Permitting / Revit", "2023", "Architectural design and drawings for the overall resort during design review and permitting."],
-        ["Residential Projects", "Structural Review / BIM", "2023–2026", "Doryong-dong, Seongdwi Village, Seongnam Bokjeong B3, Gwangju Central Park."]
+        ["Residential Projects", "Structural Review / BIM", "2023–2026", "Doryong-dong, Seongdwi Village, Seongnam Bokjeong B3, Gwangju Central Park."],
+        ["Incheon Museum Park", "Competition", "2021–2022", "Developed the design concept and led the competition report, coordinating across three collaborating firms."],
+        ["Hanwha Systems Gumi C-Project", "Design Proposal", "2021–2022", "Manufacturing, office and innovation buildings for a defense electronics campus along the Nakdong River."],
+        ["Gyeongsangbuk-do Agricultural Technology Institute", "Competition", "2021–2022", "Design proposals for a specialized agricultural research facility; led the competition report."],
+        ["Korea University of Energy and Technology", "Competition", "2021", "Education and research campus; design documentation for the competition."],
+        ["Seoul National University Cultural Center", "Competition", "2021", "Office, cultural and educational facilities; design documentation, diagrams and competition graphics."],
+        ["Seoul Central District Prosecutors' Office", "Competition", "2021–2022", "Reinterpreted the institutional image of a prosecutors' office; led the competition report."],
+        ["National Museum of Korean Literature", "International Competition", "2021–2022", "Museum embedded in the hillside of Jingwan-dong, Seoul, under a green roof."],
+        ["Wirye A1-14BL Residential Complex", "Competition", "2021", "Residential, community and retail; design documentation, diagrams and presentation graphics."]
       ],
       items: [
         { name: "Chungnam Arts Center", src: "images/CNAC_01.jpg" },
         { name: "Yuhan Corporation Remodeling", src: "images/YUHAN_01.jpg" },
-        { name: "Gwanggyo Central Plaza" },
-        { name: "Jeju Jungmun Integrated Resort" }
+        { name: "Gwanggyo Central Plaza", src: "images/GWANGGYO_02.jpg" },
+        { name: "Jeju Jungmun Integrated Resort", src: "images/JEJU_01.jpg" },
+        { name: "Incheon Museum Park", src: "images/INCHEON_01.jpg" },
+        { name: "Hanwha Systems Gumi C-Project", src: "images/HANWHA_01.jpg" },
+        { name: "Gyeongsangbuk-do Agricultural Technology Institute", src: "images/GBATI_01.jpg" },
+        { name: "Korea University of Energy and Technology", src: "images/KENTECH_01.jpg" },
+        { name: "Seoul National University Cultural Center", src: "images/SNU_01.jpg" },
+        { name: "National Museum of Korean Literature", src: "images/NMKL_01.jpg" },
+        { name: "Wirye A1-14BL Residential Complex", src: "images/WIRYE_01.jpg" }
+      ]
+    },
+    {
+      title: "Inha University", category: "Bachelor of Architecture", year: "2015–2021",
+      desc: "Five-year professional Bachelor of Architecture program at Inha University in Incheon, South Korea. Selected individual design studio projects, from a children's art center in Seochon to a self-replicating marine infrastructure for the Nakdong River estuary.",
+      projects: [
+        ["Ocean Renewal Loop", "5th year studio", "2020", "A self-replicating marine infrastructure that collects, recycles and redeploys waste in the Nakdong River estuary, Busan."],
+        ["Opening the Layers of History", "4th year studio", "2019", "Remodeling of Jeongdok Library in Bukchon into a living archive tracing time through space."],
+        ["Assembling Homes, Layering Lives", "4th year studio", "2018", "A modular housing system reframing the Korean apartment typology, Hongje-dong, Seoul."],
+        ["A Growing Cycle of Creativity", "3rd year studio", "2017", "A children's art and cultural center in Seochon where children, artists and neighbors create together."]
+      ],
+      items: [
+        { name: "Ocean Renewal Loop", src: "images/ORL_01.jpg" },
+        { name: "Opening the Layers of History", src: "images/OLH_01.jpg" },
+        { name: "Assembling Homes, Layering Lives", src: "images/AHLL_01.jpg" },
+        { name: "A Growing Cycle of Creativity", src: "images/AGCC_01.jpg" }
       ]
     }
   ];
+
+  // ---- Project pages ----
+  // Key = project name (as written above). A project with an entry here becomes clickable.
+  // info: label/value rows shown next to the title. images: shown large on the page.
+  const PAGES = {
+    "Chungnam Arts Center": {
+      info: [
+        ["Program", "Performing arts complex / Concert hall"],
+        ["Location", "Hongseong, South Korea"],
+        ["Type", "International design competition → Construction documents"],
+        ["Period", "2025.05 – 2026.03"],
+        ["Role", "BIM modeling / Structural design"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "A performing arts complex for South Chungcheong Province. For the international design competition, I prepared the competition report and participated in design coordination meetings with 3XN.",
+        "After the competition, I led structural coordination through the construction documents phase, developing structural drawings and architectural/structural Revit models across multiple building zones and design stages."
+      ],
+      images: [{ name: "CNAC_01.JPG", src: "images/CNAC_01.jpg" }]
+    },
+    "Yuhan Corporation Remodeling": {
+      info: [
+        ["Program", "Cultural facility (factory renovation)"],
+        ["Location", "74 Noryangjin-ro, Dongjak-gu, Seoul, South Korea"],
+        ["Type", "Construction documents"],
+        ["Period", "2024 – 2025"],
+        ["Role", "Facade coordination / BIM (Revit)"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "An adaptive reuse project that preserves the existing brick facade and structural framework while opening the building to new uses.",
+        "I coordinated the facade design and developed facade drawings and architectural/structural Revit models."
+      ],
+      images: [{ name: "YUHAN_01.JPG", src: "images/YUHAN_01.jpg" }]
+    },
+    "Gwanggyo Central Plaza": {
+      info: [
+        ["Program", "Urban plaza / Underground facilities"],
+        ["Location", "Gwanggyo, Suwon, South Korea"],
+        ["Type", "Design development"],
+        ["Period", "2024"],
+        ["Role", "Architectural design / BIM (Revit)"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "An expansion of Gwanggyo's central plaza, layering underground facilities beneath a new public landscape that links the surrounding towers to the lake park.",
+        "I developed the architectural design of the underground facilities and the above-grade landscape planning, and produced coordinated architectural/structural Revit models."
+      ],
+      images: [
+        { name: "GWANGGYO_01.JPG", src: "images/GWANGGYO_02.jpg" },
+        { name: "GWANGGYO_02.JPG", src: "images/GWANGGYO_01.jpg" }
+      ]
+    },
+    "Jeju Jungmun Integrated Resort": {
+      info: [
+        ["Program", "Integrated resort / Hotel / Marina"],
+        ["Location", "Jungmun, Seogwipo, Jeju, South Korea"],
+        ["Type", "Design review & permitting"],
+        ["Period", "2023"],
+        ["Role", "Architectural design / BIM (Revit)"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "A coastal integrated resort on Jeju's Jungmun shoreline, with terraced hotel buildings stepping down toward the cliffs and a marina along the water.",
+        "During the design review and permitting phase, I developed the architectural design and drawings for the overall resort and produced coordinated architectural/structural Revit models."
+      ],
+      images: [{ name: "JEJU_01.JPG", src: "images/JEJU_01.jpg" }]
+    },
+    "Incheon Museum Park": {
+      info: [
+        ["Program", "Museum complex / Public park"],
+        ["Location", "Incheon, South Korea"],
+        ["Type", "Design competition"],
+        ["Period", "2021 – 2022"],
+        ["Role", "Design concept / Competition report"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "A competition proposal for a museum park in Incheon, gathering several museums around a shared public ground and a landscaped plaza.",
+        "I developed the design concept that shaped the proposal and led preparation of the competition report, coordinating design information across three collaborating firms."
+      ],
+      images: [{ name: "INCHEON_01.JPG", src: "images/INCHEON_01.jpg" }]
+    },
+    "Hanwha Systems Gumi C-Project": {
+      info: [
+        ["Program", "Manufacturing, Office, Innovation center"],
+        ["Location", "Sanho-daero, Gumi, Gyeongsangbuk-do, South Korea"],
+        ["Type", "Design proposal"],
+        ["Site area", "89,576 m²"],
+        ["Floor area", "86,747.40 m² (B1F – 4F)"],
+        ["Structure", "RC / Steel frame, 30.3 m"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "A design proposal for Hanwha Systems' new Gumi campus in a national industrial complex facing the Nakdong River. Two manufacturing buildings, an office and an innovation center are organized as long, low volumes wrapped in metal panels and timber-toned louvers, opening the campus toward the river landscape.",
+        "The proposal includes a multi-story parking structure for 777 cars, over 18,000 m² of landscaped area, and sports facilities for employees."
+      ],
+      images: [{ name: "HANWHA_01.JPG", src: "images/HANWHA_01.jpg" }]
+    },
+    "Gyeongsangbuk-do Agricultural Technology Institute": {
+      info: [
+        ["Program", "Agricultural research facility"],
+        ["Location", "Gyeongsangbuk-do, South Korea"],
+        ["Type", "Design competition"],
+        ["Period", "2021 – 2022"],
+        ["Role", "Design proposals / Competition report"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "A competition proposal for a specialized agricultural research institute set among orchards and test fields, organizing labs, offices and public spaces along a central landscape axis.",
+        "I developed design proposals for the research facility and led preparation of the competition report."
+      ],
+      images: [{ name: "GBATI_01.JPG", src: "images/GBATI_01.jpg" }]
+    },
+    "Korea University of Energy and Technology": {
+      info: [
+        ["Program", "Education, Research"],
+        ["Location", "Naju, South Korea"],
+        ["Type", "Design competition"],
+        ["Period", "2021"],
+        ["Role", "Design documentation"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "A competition proposal for a new energy-focused university campus. Low, green-roofed academic and research buildings are linked by a continuous rooftop landscape that converges on a circular courtyard at the heart of the campus.",
+        "I was responsible for design documentation for the competition."
+      ],
+      images: [{ name: "KENTECH_01.JPG", src: "images/KENTECH_01.jpg" }]
+    },
+    "Seoul National University Cultural Center": {
+      info: [
+        ["Program", "Office, Cultural, Educational facilities"],
+        ["Location", "Seoul, South Korea"],
+        ["Type", "Design competition"],
+        ["Period", "2021"],
+        ["Role", "Design documentation"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "A competition proposal for Seoul National University's cultural center. A solid performance hall volume is wrapped by stacked, glazed program spaces and open terraces that step down into a landscaped plaza, turning the building into a public stage for campus life.",
+        "I was responsible for design documentation and produced architectural diagrams and competition graphics to communicate the design concept."
+      ],
+      images: [{ name: "SNU_01.JPG", src: "images/SNU_01.jpg" }]
+    },
+    "National Museum of Korean Literature": {
+      info: [
+        ["Program", "Museum"],
+        ["Location", "Jingwan-dong, Eunpyeong-gu, Seoul, South Korea"],
+        ["Type", "International design competition"],
+        ["Site area", "13,248 m²"],
+        ["Floor area", "15,145.95 m² (B2F – 3F)"],
+        ["Structure", "SRC / RC / Steel frame"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "An international competition proposal for the National Museum of Korean Literature, set at the foot of Bukhansan in Eunpyeong. Most of the program is placed below a sloping landscape, leaving a single long volume with a green roof and a perforated facade that hovers above the terraced ground.",
+        "The building stays within a 12-meter height, with 9,038 m² of its floor area underground, so that the museum reads as part of the hillside and the park around it."
+      ],
+      images: [{ name: "NMKL_01.JPG", src: "images/NMKL_01.jpg" }]
+    },
+    "Ocean Renewal Loop": {
+      info: [
+        ["Theme", "Marine waste regeneration complex"],
+        ["Location", "Eulsukdo, Saha-gu, Busan, South Korea"],
+        ["Type", "Academic work / Individual, 5th year"],
+        ["Period", "2020.03 – 2020.08"],
+        ["Tutor", "Jiyoung Park"],
+        ["Tool", "Rhino"]
+      ],
+      text: [
+        "A self-replicating marine infrastructure in the lower Nakdong River estuary, the most polluted coastal region in South Korea. Stagnant flow, poor water quality and complex terrain have long left this area without an effective facility for collecting and processing marine debris.",
+        "The floating platform unifies waste collection, treatment and reuse into a closed loop. Debris is sorted, washed and recycled in a central hub, then turned into new “Tube” units — autonomous floating collectors that move in flocks and are deployed back into the sea. The platform grows through the very waste it processes, while a data center at its core coordinates the cycle.",
+        "Beyond its technical function, the infrastructure is also a civic space, with education and exhibition areas that let visitors see the full cycle of regeneration and rethink waste as a resource."
+      ],
+      images: [{ name: "ORL_01.JPG", src: "images/ORL_01.jpg" }]
+    },
+    "Opening the Layers of History": {
+      info: [
+        ["Program", "Library + archive remodeling"],
+        ["Location", "Jeongdok Library, Bukchon, Seoul, South Korea"],
+        ["Type", "Academic work / Individual, 4th year"],
+        ["Period", "2019.09 – 2019.12"],
+        ["Tutor", "Minjung Cho"],
+        ["Tool", "Rhino"]
+      ],
+      text: [
+        "Jeongdok Library sits on layers of Bukchon's history: a Joseon-era noble residence, the colonial-era Kyunggi High School, the post-war void and today's library. The project reorganizes these layers into a single, continuous architectural experience.",
+        "At its center is an Archive Core — a spinning, hanging archive that is not just storage but the heart of the library, where visitors meet rare books and the institution's history. A spiraling ramp around the core turns a past of control and division into a journey from restriction to openness, and reconnects the three formerly separated buildings."
+      ],
+      images: [{ name: "OLH_01.JPG", src: "images/OLH_01.jpg" }]
+    },
+    "Assembling Homes, Layering Lives": {
+      info: [
+        ["Program", "Apartment & residential modular facilities"],
+        ["Location", "104-1 Hongje-dong, Seoul, South Korea"],
+        ["Type", "Academic work / Individual, 4th year"],
+        ["Period", "2018.03 – 2018.08"],
+        ["Tutor", "Seungyong Byun"],
+        ["Tool", "Rhino"]
+      ],
+      text: [
+        "The standardized corridor and tower apartments that shaped Korean housing are efficient, but leave residents little say in their own homes. This project proposes a modular system in which facades, units and community spaces can be configured to fit different lifestyles.",
+        "The long site steps from a public edge along the boulevard, through a shared middle zone, to a private residential band. Built on one modular grid, each cluster develops its own density and openness as residents choose their units, and a wire-cut modular envelope lets the facade change with them."
+      ],
+      images: [{ name: "AHLL_01.JPG", src: "images/AHLL_01.jpg" }]
+    },
+    "A Growing Cycle of Creativity": {
+      info: [
+        ["Program", "Children's art and cultural center"],
+        ["Location", "70 Tongui-dong, Jongno-gu, Seoul, South Korea"],
+        ["Type", "Academic work / Individual, 3rd year"],
+        ["Period", "2017.09 – 2017.12"],
+        ["Tutor", "Kyungbae Kim"],
+        ["Tool", "Rhino"]
+      ],
+      text: [
+        "Seochon is full of studios and small galleries, but as it becomes a tourist destination, children have fewer safe places to play and learn, and artists fewer places to work. This center brings children, artists and neighbors together around everyday creative activity.",
+        "Four volumes surround a central playground that rises from the ground to the roof. Circular creative pavilions, artist studios, outdoor decks and age-specific programs sit under one roof and form a continuous loop, so art, play and learning spill out of the rooms and into the site."
+      ],
+      images: [{ name: "AGCC_01.JPG", src: "images/AGCC_01.jpg" }]
+    },
+    "Wirye A1-14BL Residential Complex": {
+      info: [
+        ["Program", "Residential, Community, Retail"],
+        ["Location", "Wirye New Town, South Korea"],
+        ["Type", "Design competition"],
+        ["Period", "2021"],
+        ["Role", "Design documentation"],
+        ["Office", "SIAPLAN Architects & Planners"]
+      ],
+      text: [
+        "A competition proposal for a mixed residential complex in Wirye New Town. Slender towers and mid-rise blocks are arranged around a continuous green spine, with community and retail programs at ground level opening the block to the street.",
+        "I was responsible for design documentation and contributed to concept development, architectural diagrams and presentation graphics."
+      ],
+      images: [{ name: "WIRYE_01.JPG", src: "images/WIRYE_01.jpg" }]
+    }
+  };
+  const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const link = (name, inner) => PAGES[name] ? `<a href="#${slug(name)}">${inner}</a>` : inner;
 
   const root = document.getElementById("projects");
   const densityIcon = n => `<button data-cols="${n}" aria-label="${n} columns">${"<span></span>".repeat(n === 2 ? 2 : n === 4 ? 3 : 6)}</button>`;
@@ -311,12 +603,12 @@
           <span>${p.title},</span><span class="meta">${p.category}, ${p.year}</span>
           <button class="toggle" aria-label="Toggle description">+</button>
         </div>
-        <div class="density">${densityIcon(2)}${densityIcon(4)}${densityIcon(6)}</div>
+        <div class="density">${densityIcon(2)}${densityIcon(4)}</div>
       </div>
       <div class="desc"><div>
         <p>${p.desc}</p>
         ${p.projects ? `<ul class="plist">${p.projects.map(([n, phase, yr, note]) =>
-          `<li><span>${n}</span><span class="meta">${phase}</span><span class="meta">${yr}</span><span class="note">${note}</span></li>`).join("")}</ul>` : ""}
+          `<li><span>${link(n, n + (PAGES[n] ? " ↗" : ""))}</span><span class="meta">${phase}</span><span class="meta">${yr}</span><span class="note">${note}</span></li>`).join("")}</ul>` : ""}
       </div></div>
       <div class="grid">
         ${p.items.map((it, i) => {
@@ -326,7 +618,7 @@
           if (item.src) inner = /\.mp4$/i.test(item.src)
             ? `<video src="${item.src}" autoplay muted loop playsinline></video>`
             : `<img src="${item.src}" alt="${item.name}" loading="lazy">`;
-          return `<figure class="reveal" style="--d:${(i % 4) * 80}ms"><div class="media" style="aspect-ratio:${ratio}">${inner}</div><figcaption>${item.name}</figcaption></figure>`;
+          return `<figure class="reveal" style="--d:${(i % 4) * 80}ms">${link(item.name, `<div class="media" style="aspect-ratio:${ratio}">${inner}</div><figcaption>${item.name}</figcaption>`)}</figure>`;
         }).join("")}
       </div>`;
     const grid = el.querySelector(".grid");
@@ -363,6 +655,39 @@
     if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
   }), { rootMargin: "0px 0px -8% 0px" });
   document.querySelectorAll(".reveal").forEach(n => io.observe(n));
+
+  // Project pages: #slug shows the page, anything else shows home
+  const home = document.getElementById("home"), detail = document.getElementById("detail");
+  const allNames = PROJECTS.flatMap(s => s.projects.map(p => p[0])).filter(n => PAGES[n]);
+  let homeScroll = 0;
+  function route() {
+    const name = allNames.find(n => slug(n) === location.hash.slice(1));
+    if (!name) {
+      if (!detail.hidden) { detail.hidden = true; home.hidden = false; scrollTo(0, homeScroll); }
+      return;
+    }
+    if (detail.hidden) homeScroll = scrollY;
+    const pg = PAGES[name], row = PROJECTS.flatMap(s => s.projects).find(p => p[0] === name);
+    const i = allNames.indexOf(name), next = allNames[(i + 1) % allNames.length];
+    detail.innerHTML = `
+      <a class="back" href="#">← Index</a>
+      <div class="detail-head">
+        <h1>${name}<span class="meta">${row[2]}</span></h1>
+        <div>
+          <dl>${pg.info.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+          ${pg.text.map(t => `<p>${t}</p>`).join("")}
+        </div>
+      </div>
+      <div class="detail-media">
+        ${pg.images.map(im => `<figure class="reveal"><div class="media" style="aspect-ratio:${im.ratio || "4/3"}"><img src="${im.src}" alt="${im.name}"></div><figcaption>${im.name}</figcaption></figure>`).join("")}
+      </div>
+      ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
+    home.hidden = true; detail.hidden = false;
+    scrollTo(0, 0);
+    detail.querySelectorAll(".reveal").forEach(n => io.observe(n));
+  }
+  addEventListener("hashchange", route);
+  route();
 
   // NY clock
   const clock = document.getElementById("clock");
