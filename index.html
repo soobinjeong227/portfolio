@@ -85,6 +85,9 @@
     gap: var(--gap);
   }
   figure { display: flex; flex-direction: column; gap: 6px; }
+  .subhead { grid-column: 1 / -1; display: flex; gap: 8px; padding: 14px 0 2px; border-top: 1px solid #e6e6e6; font-size: 11px; letter-spacing: .03em; text-transform: uppercase; }
+  .subhead:first-child { padding-top: 0; border-top: 0; }
+  .subhead .meta { color: var(--muted); }
   .media {
     aspect-ratio: 4 / 3; width: 100%;
     background: var(--tile); overflow: hidden;
@@ -240,11 +243,11 @@
 <body>
 
 <header>
-  <a href="#">Soobin Jeong</a>
+  <a href="#">SOOBIN JEONG</a>
   <nav>
     <span id="clock">00:00:00 NY</span>
+    <a href="#projects">Projects</a>
     <button data-open="info">Information</button>
-    <a href="#playground">Playground</a>
     <a href="mailto:you@example.com">Contact</a>
   </nav>
   <button class="burger" aria-label="Menu"><span></span><span></span></button>
@@ -252,8 +255,8 @@
 
 <div class="menu">
   <nav>
+    <a href="#projects">Projects</a>
     <button data-open="info">Information</button>
-    <a href="#playground">Playground</a>
     <a href="mailto:you@example.com">Contact</a>
   </nav>
   <div class="menu-foot"><span class="clock-m"></span><span>© 2026</span></div>
@@ -341,13 +344,15 @@
         ["Ocean Renewal Loop", "5th year studio", "2020", "A self-replicating marine infrastructure that collects, recycles and redeploys waste in the Nakdong River estuary, Busan."],
         ["Opening the Layers of History", "4th year studio", "2019", "Remodeling of Jeongdok Library in Bukchon into a living archive tracing time through space."],
         ["Assembling Homes, Layering Lives", "4th year studio", "2018", "A modular housing system reframing the Korean apartment typology, Hongje-dong, Seoul."],
-        ["A Growing Cycle of Creativity", "3rd year studio", "2017", "A children's art and cultural center in Seochon where children, artists and neighbors create together."]
+        ["A Growing Cycle of Creativity", "3rd year studio", "2017", "A children's art and cultural center in Seochon where children, artists and neighbors create together."],
+        ["Factory Renovation", "Model study", "", "Reinterpreting the factory as a public space through model-making."]
       ],
       items: [
         { name: "Ocean Renewal Loop", src: "images/ORL_01.jpg" },
         { name: "Opening the Layers of History", src: "images/OLH_01.jpg" },
         { name: "Assembling Homes, Layering Lives", src: "images/AHLL_01.jpg" },
-        { name: "A Growing Cycle of Creativity", src: "images/AGCC_01.jpg" }
+        { name: "A Growing Cycle of Creativity", src: "images/AGCC_01.jpg" },
+        { name: "Factory Renovation", src: "images/FACTORY_01.jpg" }
       ]
     }
   ];
@@ -572,6 +577,18 @@
       ],
       images: [{ name: "AGCC_01.JPG", src: "images/AGCC_01.jpg" }]
     },
+    "Factory Renovation": {
+      info: [
+        ["Program", "Factory renovation / Public space"],
+        ["Type", "Model study"],
+        ["School", "Inha University"]
+      ],
+      text: [
+        "Four months of factory work during a leave of absence changed how I saw factories — from closed, functional spaces to places full of productive energy and potential.",
+        "Building on that experience, this project reinterprets an industrial complex as a public space. Corrugated-metal sheds and a chimney are kept as found, while timber walkways and frames thread between and over them, opening the factory to people moving through it. The idea was developed and tested through model-making."
+      ],
+      images: [{ name: "FACTORY_01.JPG", src: "images/FACTORY_01.jpg" }]
+    },
     "Wirye A1-14BL Residential Complex": {
       info: [
         ["Program", "Residential, Community, Retail"],
@@ -618,7 +635,8 @@
           if (item.src) inner = /\.mp4$/i.test(item.src)
             ? `<video src="${item.src}" autoplay muted loop playsinline></video>`
             : `<img src="${item.src}" alt="${item.name}" loading="lazy">`;
-          return `<figure class="reveal" style="--d:${(i % 4) * 80}ms">${link(item.name, `<div class="media" style="aspect-ratio:${ratio}">${inner}</div><figcaption>${item.name}</figcaption>`)}</figure>`;
+          const head = item.group ? `<div class="subhead reveal"><span>${item.group[0]}</span><span class="meta">${item.group[1]}</span></div>` : "";
+          return head + `<figure class="reveal" style="--d:${(i % 4) * 80}ms">${link(item.name, `<div class="media" style="aspect-ratio:${ratio}">${inner}</div><figcaption>${item.name}</figcaption>`)}</figure>`;
         }).join("")}
       </div>`;
     const grid = el.querySelector(".grid");
