@@ -704,7 +704,7 @@
         </div>
       </div>
       <div class="detail-media">
-        ${pg.images.map(im => `<figure class="reveal"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div><figcaption>${im.name}</figcaption></figure>`).join("")}
+        ${pg.images.map(im => `<figure class="reveal"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
       </div>
       ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
     home.hidden = true; detail.hidden = false;
