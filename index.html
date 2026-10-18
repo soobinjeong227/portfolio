@@ -112,12 +112,13 @@
   .detail-head dl { font-size: 15px; margin-top: calc(-0.29em + 0.174 * clamp(28px, 3.4vw, 46px)); display: grid; grid-template-columns: 7em 1fr; gap: 6px 12px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #e6e6e6; }
   .detail-head dt { color: var(--muted); }
   .detail-head p { font-size: 15px; line-height: 1.4; max-width: 36em; margin-bottom: .8em; }
-  .detail-media { display: grid; gap: 24px; }
+  .detail-media { display: grid; gap: 24px; padding: 0 12vw; }
   .next { display: flex; flex-direction: column; gap: 4px; margin-top: 72px; padding-top: 16px; border-top: 1px solid #e6e6e6; font-size: clamp(22px, 2.4vw, 32px); letter-spacing: -0.01em; }
   .next .meta { font-size: 13px; letter-spacing: 0; color: var(--muted); }
   footer button { color: var(--muted); }
   @media (max-width: 720px) {
     .detail-head { grid-template-columns: 1fr; margin-bottom: 32px; }
+    .detail-media { padding: 0; }
   }
 
   /* Density switch */
