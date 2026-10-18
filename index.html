@@ -368,6 +368,7 @@
   // info: label/value rows shown next to the title. images: shown large on the page.
   const PAGES = {
     "Chungnam Arts Center": {
+      team: "Technical Session / BIM Team",
       info: [
         ["Program", "Performing arts complex / Concert hall"],
         ["Location", "Hongseong, South Korea"],
@@ -383,6 +384,7 @@
       images: [{ name: "CNAC_02.JPG", src: "images/CNAC_02.jpg" }]
     },
     "Yuhan Corporation Remodeling": {
+      team: "Technical Session / BIM Team",
       info: [
         ["Program", "Cultural facility (factory renovation)"],
         ["Location", "74 Noryangjin-ro, Dongjak-gu, Seoul, South Korea"],
@@ -398,6 +400,7 @@
       images: [{ name: "YUHAN_01.JPG", src: "images/YUHAN_01.jpg" }]
     },
     "Gwanggyo Central Plaza": {
+      team: "Technical Session / BIM Team",
       info: [
         ["Program", "Urban plaza / Underground facilities"],
         ["Location", "Gwanggyo, Suwon, South Korea"],
@@ -416,6 +419,7 @@
       ]
     },
     "Jeju Jungmun Integrated Resort": {
+      team: "Technical Session / BIM Team",
       info: [
         ["Program", "Integrated resort / Hotel / Marina"],
         ["Location", "Jungmun, Seogwipo, Jeju, South Korea"],
@@ -431,6 +435,7 @@
       images: [{ name: "JEJU_01.JPG", src: "images/JEJU_01.jpg" }]
     },
     "Incheon Museum Park": {
+      team: "Design Competition Team",
       info: [
         ["Program", "Museum complex / Public park"],
         ["Location", "Incheon, South Korea"],
@@ -446,6 +451,7 @@
       images: [{ name: "INCHEON_01.JPG", src: "images/INCHEON_01.jpg" }]
     },
     "Hanwha Systems Gumi C-Project": {
+      team: "Design Competition Team",
       info: [
         ["Program", "Manufacturing, Office, Innovation center"],
         ["Location", "Sanho-daero, Gumi, Gyeongsangbuk-do, South Korea"],
@@ -462,6 +468,7 @@
       images: [{ name: "HANWHA_01.JPG", src: "images/HANWHA_01.jpg" }]
     },
     "Gyeongsangbuk-do Agricultural Technology Institute": {
+      team: "Design Competition Team",
       info: [
         ["Program", "Agricultural research facility"],
         ["Location", "Gyeongsangbuk-do, South Korea"],
@@ -477,6 +484,7 @@
       images: [{ name: "GBATI_01.JPG", src: "images/GBATI_01.jpg" }]
     },
     "Korea University of Energy and Technology": {
+      team: "Design Competition Team",
       info: [
         ["Program", "Education, Research"],
         ["Location", "Naju, South Korea"],
@@ -492,6 +500,7 @@
       images: [{ name: "KENTECH_01.JPG", src: "images/KENTECH_01.jpg" }]
     },
     "Seoul National University Cultural Center": {
+      team: "Design Competition Team",
       info: [
         ["Program", "Office, Cultural, Educational facilities"],
         ["Location", "Seoul, South Korea"],
@@ -507,6 +516,7 @@
       images: [{ name: "SNU_01.JPG", src: "images/SNU_01.jpg" }]
     },
     "National Museum of Korean Literature": {
+      team: "Design Competition Team",
       info: [
         ["Program", "Museum"],
         ["Location", "Jingwan-dong, Eunpyeong-gu, Seoul, South Korea"],
@@ -596,6 +606,7 @@
       images: [{ name: "FACTORY_01.JPG", src: "images/FACTORY_01.jpg" }]
     },
     "Wirye A1-14BL Residential Complex": {
+      team: "Design Competition Team",
       info: [
         ["Program", "Residential, Community, Retail"],
         ["Location", "Wirye New Town, South Korea"],
@@ -696,7 +707,7 @@
     detail.innerHTML = `
       <a class="back" href="#">← Index</a>
       <div class="detail-head">
-        <h1>${name}<span class="meta">${row[2]}</span></h1>
+        <h1>${name}<span class="meta">${pg.team || row[2]}</span></h1>
         <div>
           <dl>${pg.info.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
           ${pg.text.map(t => `<p>${t}</p>`).join("")}
