@@ -112,6 +112,8 @@
   .detail-head dl { font-size: 15px; margin-top: calc(0.895 * clamp(28px, 3.4vw, 46px) + 4.75px); display: grid; grid-template-columns: 7em 1fr; gap: 6px 12px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #c8c8c8; }
   .detail-head dt { color: var(--muted); }
   .detail-head p { font-size: 15px; line-height: 1.4; max-width: 36em; margin-bottom: .8em; }
+  .detail-hero { margin: 0 calc(-1 * var(--pad)) 56px; }
+  .detail-hero img { display: block; width: 100%; max-height: 90vh; object-fit: cover; }
   .detail-media { display: grid; gap: 24px; padding: 0 11vw; }
   .detail-media .media { aspect-ratio: auto; }
   .next { display: flex; flex-direction: column; gap: 4px; margin-top: 72px; padding-top: 16px; border-top: 1px solid #e6e6e6; font-size: clamp(22px, 2.4vw, 32px); letter-spacing: -0.01em; }
@@ -696,6 +698,7 @@
     const i = allNames.indexOf(name), next = allNames[(i + 1) % allNames.length];
     detail.innerHTML = `
       <a class="back" href="#">← Index</a>
+      ${pg.images[0] ? `<div class="detail-hero"><img src="${pg.images[0].src}" alt="${pg.images[0].name}"></div>` : ""}
       <div class="detail-head">
         <h1>${name}<span class="meta">${(pg.info.find(([k]) => k === "Role") || [, row[2]])[1]}</span></h1>
         <div>
@@ -704,7 +707,7 @@
         </div>
       </div>
       <div class="detail-media">
-        ${pg.images.map(im => `<figure class="reveal"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
+        ${pg.images.slice(1).map(im => `<figure class="reveal"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
       </div>
       ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
     home.hidden = true; detail.hidden = false;
