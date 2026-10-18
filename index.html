@@ -105,9 +105,10 @@
   .detail { padding: 72px var(--pad) 40px; animation: fadeIn .6s var(--ease) both; }
   .detail .back { display: inline-block; margin-bottom: 32px; }
   .detail-head { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 56px; }
-  .detail-head h1 { font-size: clamp(28px, 3.4vw, 46px); font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; }
+  .detail-head h1 { font-size: clamp(28px, 3.4vw, 46px); font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; margin-top: -0.155em; }
+  /* negative margins trim the space above capitals so the title and the first info row share a top line */
   .detail-head h1 .meta { display: block; margin-top: 8px; font-size: 15px; letter-spacing: 0; color: var(--muted); }
-  .detail-head dl { display: grid; grid-template-columns: 7em 1fr; gap: 6px 12px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #e6e6e6; }
+  .detail-head dl { margin-top: -0.29em; display: grid; grid-template-columns: 7em 1fr; gap: 6px 12px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #e6e6e6; }
   .detail-head dt { color: var(--muted); }
   .detail-head p { font-size: 15px; line-height: 1.4; max-width: 36em; margin-bottom: .8em; }
   .detail-media { display: grid; gap: 24px; }
