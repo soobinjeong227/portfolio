@@ -104,7 +104,6 @@
 
   /* Project page */
   .detail { padding: 52px var(--pad) 40px; animation: fadeIn .6s var(--ease) both; }
-  .detail .back { display: inline-block; margin-bottom: 16px; }
   .detail-head { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; margin-bottom: 56px; padding: 0 11vw; }
   .detail-head h1 { font-size: clamp(28px, 3.4vw, 46px); font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; margin-top: -0.155em; }
   /* dl margin puts the first info row's cap top level with the year under the title (0.895 = title line box minus its trim; 4.75px = year margin plus cap offsets) */
@@ -697,7 +696,6 @@
     const pg = PAGES[name], row = PROJECTS.flatMap(s => s.projects).find(p => p[0] === name);
     const i = allNames.indexOf(name), next = allNames[(i + 1) % allNames.length];
     detail.innerHTML = `
-      <a class="back" href="#">← Index</a>
       ${pg.images[0] ? `<div class="detail-hero"><img src="${pg.images[0].src}" alt="${pg.images[0].name}"></div>` : ""}
       <div class="detail-head">
         <h1>${name}<span class="meta">${(pg.info.find(([k]) => k === "Role") || [, row[2]])[1]}</span></h1>
