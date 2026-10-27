@@ -119,16 +119,12 @@
   .detail-media .media { aspect-ratio: auto; }
   .detail-media figure:hover .media img { transform: none; }
   .detail-media figure:first-child { margin-top: 40px; }
-  .detail-media .seq { display: grid; width: 66%; margin: 0 auto; }
-  .detail-media .seq img { grid-area: 1 / 1; visibility: hidden; }
-  .detail-media .seq img.on { visibility: visible; }
   .next { display: flex; flex-direction: column; gap: 4px; margin-top: 72px; padding-top: 16px; border-top: 1px solid #e6e6e6; font-size: clamp(22px, 2.4vw, 32px); letter-spacing: -0.01em; }
   .next .meta { font-size: 13px; letter-spacing: 0; color: var(--muted); }
   footer button { color: var(--muted); }
   @media (max-width: 720px) {
     .detail-head { grid-template-columns: 1fr; margin-bottom: 32px; padding: 0; }
     .detail-media { padding: 0; }
-    .detail-media .seq { width: 100%; }
   }
 
   /* Density switch */
@@ -392,7 +388,7 @@
       ],
       images: [
         { name: "CNAC_02.JPG", src: "images/CNAC_02.jpg" },
-        { name: "CNAC_03.JPG", frames: [1, 2, 3, 4, 5, 6].map(n => `images/CNAC_03_${n}.jpg`) },
+        { name: "CNAC_03.JPG", src: "images/CNAC_03.jpg" },
         { name: "CNAC_04.JPG", src: "images/CNAC_04.jpg" },
         { name: "CNAC_05.JPG", src: "images/CNAC_05.jpg" },
         { name: "CNAC_06.JPG", src: "images/CNAC_06.jpg" },
@@ -720,7 +716,7 @@
         </div>
       </div>
       <div class="detail-media">
-        ${pg.images.slice(1).map(im => `<figure class="reveal"><div class="media${im.frames ? " seq" : ""}"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}>${im.frames ? im.frames.map((f, j) => `<img src="${f}" alt="${im.name}"${j ? "" : ' class="on"'}>`).join("") : `<img src="${im.src}" alt="${im.name}">`}</div></figure>`).join("")}
+        ${pg.images.slice(1).map(im => `<figure class="reveal"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
       </div>
       ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
     home.hidden = true; detail.hidden = false;
@@ -729,13 +725,6 @@
   }
   addEventListener("hashchange", route);
   route();
-
-  // Step-through diagrams: show each frame in turn, like a slow GIF
-  setInterval(() => document.querySelectorAll(".seq").forEach(m => {
-    const on = m.querySelector(".on");
-    on.classList.remove("on");
-    (on.nextElementSibling || m.firstElementChild).classList.add("on");
-  }), 1400);
 
   // NY clock
   const clock = document.getElementById("clock");
