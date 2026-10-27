@@ -118,7 +118,7 @@
   .detail-media { display: grid; gap: 24px; padding: 0 11vw; }
   .detail-media .media { aspect-ratio: auto; }
   .detail-media figure:hover .media img { transform: none; }
-  .detail-media figure:first-child { margin-top: 40px; }
+  .detail-media figure:first-child, .detail-media figure.space { margin-top: 40px; }
   /* short text under an image, in the right column like the description above */
   .detail-media .media-text { width: 40%; margin: -8px 0 32px auto; font-size: 15px; line-height: 1.4; }
   .detail-media .media-text.left { width: 48%; margin: -8px auto 32px 0; }
@@ -400,7 +400,7 @@
         { name: "CNAC_02.JPG", src: "images/CNAC_02.jpg" },
         { name: "CNAC_03.JPG", src: "images/CNAC_03.jpg" },
         { name: "CNAC_04.JPG", src: "images/CNAC_04.jpg" },
-        { name: "CNAC_05.JPG", src: "images/CNAC_05.jpg" },
+        { name: "CNAC_05.JPG", src: "images/CNAC_05.jpg", space: true },
         { text: "Rising from the landscape, the roof sweeps upward in a single gesture, drawing on the curved eaves of traditional Korean architecture. Beneath it, a fully glazed facade reveals the warm timber interior and the spiral stair, turning the lobby into a lantern that faces the plaza. The forecourt gathers visitors from the surrounding park and guides them toward the main entrance.", left: true },
         { name: "CNAC_06.JPG", src: "images/CNAC_06.jpg" },
         { text: "The main lobby unfolds beneath a sweeping timber ceiling, where a curved stair and stepped seating draw visitors up from the plaza. Layered balconies wrap around the hall volume, opening views across the foyer and out to the landscape through a continuous glass facade. Throughout the day, the lobby works as an open civic living room for informal gatherings, small performances and pauses between shows.", left: true },
@@ -728,7 +728,7 @@
         </div>
       </div>
       <div class="detail-media">
-        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside reveal"><div>${im.beside.map(src => `<img src="${src}" alt="">`).join("")}</div><p>${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
+        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside reveal"><div>${im.beside.map(src => `<img src="${src}" alt="">`).join("")}</div><p>${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal${im.space ? " space" : ""}"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
       </div>
       ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
     home.hidden = true; detail.hidden = false;
