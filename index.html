@@ -123,8 +123,8 @@
   .detail-media .media-text { width: 40%; margin: -8px 0 32px auto; font-size: 15px; line-height: 1.4; }
   .detail-media .media-text.left { width: 48%; margin: -8px auto 32px 0; }
   /* images pushed to the right, with their text above them */
-  .detail-media .beside { display: grid; grid-template-columns: 1fr 36%; gap: 24px; align-items: start; }
-  .detail-media .beside p { width: 75%; font-size: 15px; line-height: 1.4; margin-top: -0.3em; }
+  .detail-media .beside { display: grid; grid-template-columns: 62% 1fr; gap: 24px; align-items: start; }
+  .detail-media .beside p { font-size: 15px; line-height: 1.4; margin-top: -0.3em; }
   .detail-media .beside > div { display: grid; gap: 24px; }
   .detail-media .beside img { display: block; width: 100%; }
   .next { display: flex; flex-direction: column; gap: 4px; margin-top: 72px; padding-top: 16px; border-top: 1px solid #e6e6e6; font-size: clamp(22px, 2.4vw, 32px); letter-spacing: -0.01em; }
@@ -133,7 +133,7 @@
   @media (max-width: 720px) {
     .detail-head { grid-template-columns: 1fr; margin-bottom: 32px; padding: 0; }
     .detail-media { padding: 0; }
-    .detail-media .media-text, .detail-media .beside p { width: auto; }
+    .detail-media .media-text { width: auto; }
     .detail-media .beside { grid-template-columns: 1fr; }
   }
 
@@ -728,7 +728,7 @@
         </div>
       </div>
       <div class="detail-media">
-        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside reveal"><p>${im.text}</p><div>${im.beside.map(src => `<img src="${src}" alt="">`).join("")}</div></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
+        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside reveal"><div>${im.beside.map(src => `<img src="${src}" alt="">`).join("")}</div><p>${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
       </div>
       ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
     home.hidden = true; detail.hidden = false;
