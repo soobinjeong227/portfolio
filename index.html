@@ -729,7 +729,7 @@
         </div>
       </div>
       <div class="detail-media">
-        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside reveal"><div>${im.beside.map(src => `<img src="${src}" alt="">`).join("")}</div><p>${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal${im.space ? " space" : ""}"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
+        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside"><div>${im.beside.map(src => `<img class="reveal" src="${src}" alt="">`).join("")}</div><p class="reveal">${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal${im.space ? " space" : ""}"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
       </div>
       ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
     home.hidden = true; detail.hidden = false;
