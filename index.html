@@ -408,7 +408,7 @@
         { text: "Inside, the foyer rises through the full height of the building, framed by slender columns and a timber-slatted ceiling that follows the curve of the roof. Sculpted balconies and an open stair connect each level, while the glass facade keeps the surrounding hills in constant view.", beside: ["images/CNAC_07_1.jpg", "images/CNAC_07_2.jpg"] },
         { name: "CNAC_09.JPG", src: "images/CNAC_09.jpg", space: true },
         { name: "CNAC_10.JPG", src: "images/CNAC_10.jpg" },
-        { name: "CNAC_13.JPG", src: "images/CNAC_13.jpg" },
+        { name: "CNAC_13.JPG", src: "images/CNAC_13.jpg", top: 40 },
         { name: "CNAC_11.JPG", src: "images/CNAC_11.jpg" },
         { name: "CNAC_12.JPG", src: "images/CNAC_12.jpg" }
       ]
@@ -734,7 +734,7 @@
         </div>
       </div>
       <div class="detail-media">
-        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside"><div>${im.beside.map(src => `<img class="reveal" src="${src}" alt="">`).join("")}</div><p class="reveal">${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal${im.space ? " space" : ""}"><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
+        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside"><div>${im.beside.map(src => `<img class="reveal" src="${src}" alt="">`).join("")}</div><p class="reveal">${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal${im.space ? " space" : ""}"${im.top ? ` style="margin-top:${im.top}px"` : ""}><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}><img src="${im.src}" alt="${im.name}"></div></figure>`).join("")}
       </div>
       ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
     home.hidden = true; detail.hidden = false;
