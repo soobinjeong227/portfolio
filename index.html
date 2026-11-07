@@ -260,6 +260,7 @@
     .menu nav > * { font-size: 34px; }
     .panel p { font-size: 19px; }
   }
+  img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
 </style>
 </head>
 <body>
@@ -763,6 +764,9 @@
   document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => panel.classList.add("show"));
   panel.querySelector("[data-close]").onclick = () => panel.classList.remove("show");
   addEventListener("keydown", e => { if (e.key === "Escape") { panel.classList.remove("show"); body.classList.remove("menu-open"); } });
+// discourage casual saving of portfolio images (right-click / drag)
+document.addEventListener("contextmenu", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
+document.addEventListener("dragstart", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
 </script>
 </body>
 </html>
