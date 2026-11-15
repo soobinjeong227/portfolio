@@ -187,6 +187,9 @@
   .panel > div > ul { margin-bottom: 36px; }
   .panel p { text-wrap: pretty; hyphens: manual; }
   .panel .cv { border-top: 1px solid #e6e6e6; }
+  .panel h2.contact { margin-top: 72px; }
+  /* desktop: resume column keeps 640px, same margin on both outer sides */
+  @media (min-width: 1025px) { .panel { grid-template-columns: 1fr minmax(0, 640px); column-gap: 8vw; padding-left: 8vw; padding-right: 8vw; } }
   .panel .cv li { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 8px 0; border-bottom: 1px solid #e6e6e6; line-height: 1.4; }
   .panel .cv li > span:first-child .meta { display: block; margin-top: 2px; }
   .panel .cv .meta { color: var(--muted); }
@@ -337,7 +340,7 @@
     <p>Architect licensed in Korea with 5+ years of professional experience spanning concept design through construction documentation across residential and non‑residential projects.</p>
     <p>Three years of BIM experience using Revit for construction documentation and architectural and structural coordination, and two years of experience in architectural design competitions.</p>
     <p>Currently pursuing an M.S. in Advanced Architectural Design at Columbia GSAPP as an Avery Scholarship recipient.</p>
-    <h2>Contact</h2>
+    <h2 class="contact">Contact</h2>
     <ul>
       <li>New York, NY</li>
       <li><a href="mailto:soobin.jeong0227@gmail.com">soobin.jeong0227@gmail.com</a></li>
