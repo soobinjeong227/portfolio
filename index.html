@@ -53,8 +53,8 @@
   .reel { overflow: hidden; margin-top: -5vh; padding: 40px 0 48px; cursor: grab; user-select: none; touch-action: pan-y; }
   .reel.dragging { cursor: grabbing; }
   .reel-track { display: flex; gap: var(--gap); width: max-content; will-change: transform; }
-  .reel figure img { height: clamp(240px, 37vh, 440px); width: auto; display: block; transform-origin: 50% 100%; transition: transform .6s var(--ease); }
-  .reel figure:hover img { transform: scale(1.1); transform-origin: 50% 100%; }
+  .reel figure img { height: clamp(240px, 37vh, 440px); width: auto; display: block; transform-origin: 50% 100%; transition: transform 1s cubic-bezier(.25,.1,.25,1); }
+  .reel figure:hover img { transform: scale(1.07); transform-origin: 50% 100%; }
   .reel figure:hover { position: relative; z-index: 1; }
   .reel figcaption .meta { color: var(--muted); margin-right: 6px; }
   /* Projects page (#projects): intro + grid; home: intro + reel */
