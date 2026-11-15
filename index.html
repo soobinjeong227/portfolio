@@ -49,6 +49,17 @@
   }
   .intro p { font-size: clamp(22px, 2.6vw, 34px); line-height: 1.15; max-width: 16em; letter-spacing: -0.01em; }
 
+  /* Home reel: thumbnails drift sideways in a loop; drag, wheel or arrow keys move it */
+  .reel { overflow: hidden; padding: 0 0 48px; cursor: grab; user-select: none; touch-action: pan-y; }
+  .reel.dragging { cursor: grabbing; }
+  .reel-track { display: flex; gap: var(--gap); width: max-content; will-change: transform; }
+  .reel figure img { height: clamp(200px, 30vh, 360px); width: auto; display: block; }
+  .reel figcaption .meta { color: var(--muted); margin-right: 6px; }
+  /* Projects page (#projects): the grid only; home: intro + reel only */
+  body.view-projects .intro, body.view-projects .reel { display: none; }
+  body:not(.view-projects) #projects { display: none; }
+  body.view-projects #projects { padding-top: 64px; }
+
   /* Project */
   .project { padding: 0 var(--pad) 72px; }
   .project-bar {
@@ -291,6 +302,8 @@
   <section class="intro">
     <p>Soobin Jeong is an architectural designer working at the intersection of space, material and fabrication.</p>
   </section>
+
+  <section class="reel" aria-label="Projects"><div class="reel-track"></div></section>
 
   <div id="projects"></div>
 </main>
@@ -713,6 +726,27 @@
     .map((w, i) => `<span class="w"><span style="--d:${200 + i * 45}ms">${w}</span></span>`).join(" ");
   requestAnimationFrame(() => requestAnimationFrame(() => intro.classList.add("in")));
 
+  // Home reel: every grid thumbnail at its own ratio, doubled so the loop is seamless
+  const reel = document.querySelector(".reel"), track = reel.querySelector(".reel-track");
+  const thumbs = PROJECTS.flatMap(s => s.items).filter(it => it.src && !/\.mp4$/i.test(it.src));
+  const fig = (it, i) => `<figure>${link(it.name, `<img src="${it.src}" alt="${it.name}" draggable="false"><figcaption><span class="meta">( ${String(i + 1).padStart(2, "0")} )</span>${it.name}</figcaption>`)}</figure>`;
+  track.innerHTML = thumbs.map(fig).join("") + thumbs.map(fig).join("");
+  let x = 0, v = 0, drag = null, moved = 0;
+  const speed = 0.5; // px per frame when idle
+  (function frame() {
+    const half = track.scrollWidth / 2;
+    if (!drag) { x -= speed + v; v *= 0.94; }
+    if (half) x = ((x % half) - half) % half; // keep x in (-half, 0]
+    track.style.transform = `translate3d(${x}px,0,0)`;
+    requestAnimationFrame(frame);
+  })();
+  reel.addEventListener("pointerdown", e => { drag = { x: e.clientX, x0: x }; moved = 0; reel.classList.add("dragging"); });
+  addEventListener("pointermove", e => { if (!drag) return; const dx = e.clientX - drag.x; moved = Math.max(moved, Math.abs(dx)); v = -(drag.x0 + dx - x); x = drag.x0 + dx; });
+  addEventListener("pointerup", () => { if (drag) { drag = null; reel.classList.remove("dragging"); } });
+  reel.addEventListener("click", e => { if (moved > 5) e.preventDefault(); }, true);
+  reel.addEventListener("wheel", e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { v += e.deltaX * 0.05; e.preventDefault(); } }, { passive: false });
+  addEventListener("keydown", e => { if (!document.body.classList.contains("view-projects") && detail.hidden) { if (e.key === "ArrowRight") v += 12; if (e.key === "ArrowLeft") v -= 12; } });
+
   // Scroll reveal
   const io = new IntersectionObserver(entries => entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
@@ -726,7 +760,11 @@
   function route() {
     const name = allNames.find(n => slug(n) === location.hash.slice(1));
     if (!name) {
-      if (!detail.hidden) { detail.hidden = true; home.hidden = false; scrollTo(0, homeScroll); }
+      const wasDetail = !detail.hidden, wasProjects = document.body.classList.contains("view-projects");
+      document.body.classList.toggle("view-projects", location.hash === "#projects");
+      detail.hidden = true; home.hidden = false;
+      if (wasDetail) scrollTo(0, homeScroll);
+      else if (wasProjects !== document.body.classList.contains("view-projects")) scrollTo(0, 0);
       return;
     }
     if (detail.hidden) homeScroll = scrollY;
