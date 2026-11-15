@@ -822,7 +822,7 @@
       <div class="detail-head">
         <h1>${name}<span class="meta">${(pg.info.find(([k]) => k === "Role") || [, row[2]])[1]}</span></h1>
         <div>
-          <dl>${pg.info.filter(([k]) => k !== "Role").map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+          <dl>${pg.info.filter(([k, v]) => k !== "Role" && v !== "—").map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
           ${pg.text.map(t => `<p>${t}</p>`).join("")}
         </div>
       </div>
