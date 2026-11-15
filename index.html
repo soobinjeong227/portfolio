@@ -781,8 +781,9 @@
     requestAnimationFrame(frame);
   })();
   reel.addEventListener("dragstart", e => e.preventDefault()); // links/images would start a native drag and steal the pointer
-  reel.addEventListener("pointerdown", e => { e.preventDefault(); drag = { x: e.clientX, x0: x }; moved = 0; reel.classList.add("dragging"); });
-  addEventListener("pointermove", e => { if (!drag) return; const dx = e.clientX - drag.x; moved = Math.max(moved, Math.abs(dx)); v = -(drag.x0 + dx - x); x = drag.x0 + dx; });
+  reel.addEventListener("pointerdown", e => { e.preventDefault(); drag = { start: e.clientX, last: e.clientX }; moved = 0; reel.classList.add("dragging"); });
+  // move by the step since the last event, so the loop wrap in frame() is never undone mid-drag
+  addEventListener("pointermove", e => { if (!drag) return; const step = e.clientX - drag.last; drag.last = e.clientX; moved = Math.max(moved, Math.abs(e.clientX - drag.start)); x += step; v = -step; });
   addEventListener("pointerup", () => { if (drag) { drag = null; reel.classList.remove("dragging"); } });
   reel.addEventListener("click", e => { if (moved > 5) e.preventDefault(); }, true);
   reel.addEventListener("wheel", e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { v += e.deltaX * 0.05; e.preventDefault(); } }, { passive: false });
