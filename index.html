@@ -171,30 +171,26 @@
   .density [data-cols="6"] { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
 
   /* Info panel */
+  /* Information page (#information), shown like a project page */
   .panel {
-    position: fixed; inset: 0; z-index: 20;
-    background: var(--bg);
-    padding: 80px var(--pad) var(--pad);
-    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
-    opacity: 0; pointer-events: none;
-    transition: opacity .35s;
+    display: none;
+    padding: 80px var(--pad) 40px;
+    grid-template-columns: 1fr 1fr; gap: 24px;
   }
-  .panel.show { opacity: 1; pointer-events: auto; }
+  body.view-info .panel { display: grid; }
   .panel h2 { font-size: 13px; font-weight: 400; color: var(--muted); margin-bottom: 10px; }
   .panel p { font-size: clamp(18px, 1.8vw, 24px); line-height: 1.2; max-width: 26em; margin-bottom: 1em; }
   .panel ul { list-style: none; font-size: 15px; line-height: 1.6; }
-  .panel { overflow-y: auto; }
   .panel > div > ul { margin-bottom: 36px; }
   .panel p { text-wrap: pretty; hyphens: manual; }
   .panel .cv { border-top: 1px solid #e6e6e6; }
-  .panel h2.contact { margin-top: 72px; }
+  .panel h2.contact { margin-top: 72px; margin-bottom: 4px; }
   /* desktop: resume column keeps 640px, same margin on both outer sides */
-  @media (min-width: 1025px) { .panel { grid-template-columns: 1fr minmax(0, 640px); column-gap: 13vw; padding-left: 8vw; padding-right: 8vw; } }
+  @media (min-width: 1025px) { .panel { grid-template-columns: 1fr minmax(0, 640px); column-gap: 13vw; padding-left: 5vw; padding-right: 5vw; } }
   .panel .cv li { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 8px 0; border-bottom: 1px solid #e6e6e6; line-height: 1.4; }
   .panel .cv li > span:first-child .meta { display: block; margin-top: 2px; }
   .panel .cv .meta { color: var(--muted); }
   .panel .cv li > span:last-child { text-align: right; }
-  .panel .close { position: fixed; top: var(--pad); right: var(--pad); z-index: 21; }
 
   /* ---- Motion ---- */
   :root { --ease: cubic-bezier(.2,.7,.2,1); }
@@ -222,7 +218,7 @@
   .panel.show > div > *:nth-child(2) { transition-delay: 60ms; }
   .panel.show > div > *:nth-child(3) { transition-delay: 120ms; }
   .panel.show > div > *:nth-child(n+4) { transition-delay: 180ms; }
-  .panel.show > div:nth-child(3) > * { transition-delay: 150ms; }
+  .panel.show > div:nth-child(2) > * { transition-delay: 150ms; }
 
   /* Underline hover on nav */
   header a, header button { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .4s var(--ease), color .2s; }
@@ -276,8 +272,7 @@
     .density { display: none; }
     .grid { grid-template-columns: repeat(2, 1fr) !important; }
     figcaption { font-size: 9px; }
-    .panel { grid-template-columns: 1fr; overflow-y: auto; padding-top: 72px; z-index: 35; }
-    .panel .close { display: none; }
+    .panel { grid-template-columns: 1fr; padding-top: 72px; }
   }
 
   /* ---- Mobile ---- */
@@ -301,7 +296,7 @@
   <nav>
     <span id="clock">00:00:00 NY</span>
     <a href="#projects">Projects</a>
-    <button data-open="info">Information</button>
+    <a href="#information">Information</a>
     <a href="mailto:soobin.jeong0227@gmail.com">Contact</a>
   </nav>
   <button class="burger" aria-label="Menu"><span></span><span></span></button>
@@ -310,7 +305,7 @@
 <div class="menu">
   <nav>
     <a href="#projects">Projects</a>
-    <button data-open="info">Information</button>
+    <a href="#information">Information</a>
     <a href="mailto:soobin.jeong0227@gmail.com">Contact</a>
   </nav>
   <div class="menu-foot"><span class="clock-m"></span><span>© 2026</span></div>
@@ -328,13 +323,7 @@
 
 <main id="detail" class="detail" hidden></main>
 
-<footer>
-  <span>© 2026 Soobin Jeong</span>
-  <button onclick="scrollTo({ top: 0, behavior: 'smooth' })">Back to top ↑</button>
-</footer>
-
 <section class="panel" id="info">
-  <button class="close" data-close>Close</button>
   <div>
     <h2>About</h2>
     <p>Architect licensed in Korea with 5+ years of professional experience spanning concept design through construction documentation across residential and non‑residential projects.</p>
@@ -379,6 +368,12 @@
     </ul>
   </div>
 </section>
+
+<footer>
+  <span>© 2026 Soobin Jeong</span>
+  <button onclick="scrollTo({ top: 0, behavior: 'smooth' })">Back to top ↑</button>
+</footer>
+
 
 <script>
   // ---- Edit your work here ----
@@ -804,6 +799,11 @@
   let homeScroll = 0;
   function route() {
     const name = allNames.find(n => slug(n) === location.hash.slice(1));
+    const info = document.getElementById("info"), isInfo = location.hash === "#information";
+    if (isInfo !== document.body.classList.contains("view-info")) scrollTo(0, 0);
+    document.body.classList.toggle("view-info", isInfo);
+    info.classList.remove("show");
+    if (isInfo) { home.hidden = true; detail.hidden = true; requestAnimationFrame(() => requestAnimationFrame(() => info.classList.add("show"))); return; }
     if (!name) {
       const wasDetail = !detail.hidden, wasProjects = document.body.classList.contains("view-projects");
       document.body.classList.toggle("view-projects", location.hash === "#projects");
@@ -844,16 +844,11 @@
   // Burger menu (tablet / mobile)
   const body = document.body;
   document.querySelector(".burger").onclick = () => {
-    if (panel.classList.contains("show")) { panel.classList.remove("show"); body.classList.remove("menu-open"); return; }
     body.classList.toggle("menu-open");
   };
   document.querySelectorAll(".menu a").forEach(a => a.onclick = () => body.classList.remove("menu-open"));
 
-  // Info panel
-  const panel = document.getElementById("info");
-  document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => panel.classList.add("show"));
-  panel.querySelector("[data-close]").onclick = () => panel.classList.remove("show");
-  addEventListener("keydown", e => { if (e.key === "Escape") { panel.classList.remove("show"); body.classList.remove("menu-open"); } });
+  addEventListener("keydown", e => { if (e.key === "Escape") body.classList.remove("menu-open"); });
 // discourage casual saving of portfolio images (right-click / drag)
 document.addEventListener("contextmenu", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
 document.addEventListener("dragstart", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
