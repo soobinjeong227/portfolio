@@ -57,10 +57,9 @@
   .reel figure:hover img { transform: scale(1.15); transform-origin: 50% 100%; }
   .reel figure:hover { position: relative; z-index: 1; }
   .reel figcaption .meta { color: var(--muted); margin-right: 6px; }
-  /* Projects page (#projects): the grid only; home: intro + reel only */
-  body.view-projects .intro, body.view-projects .reel { display: none; }
-  body:not(.view-projects) #projects { display: none; }
-  body.view-projects #projects { padding-top: 64px; }
+  /* Projects page (#projects): intro + grid; home: intro + reel */
+  body.view-projects .reel { display: none; }
+  body:not(.view-projects) #project-list { display: none; }
 
   /* Project */
   .project { padding: 0 var(--pad) 72px; }
@@ -307,7 +306,7 @@
 
   <section class="reel" aria-label="Projects"><div class="reel-track"></div></section>
 
-  <div id="projects"></div>
+  <div id="project-list"></div>
 </main>
 
 <main id="detail" class="detail" hidden></main>
@@ -667,7 +666,7 @@
   const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const link = (name, inner) => PAGES[name] ? `<a href="#${slug(name)}">${inner}</a>` : inner;
 
-  const root = document.getElementById("projects");
+  const root = document.getElementById("project-list");
   const densityIcon = n => `<button data-cols="${n}" aria-label="${n} columns">${"<span></span>".repeat(n === 2 ? 2 : n === 4 ? 3 : 6)}</button>`;
 
   PROJECTS.forEach(p => {
