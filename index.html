@@ -183,6 +183,13 @@
   .panel h2 { font-size: 13px; font-weight: 400; color: var(--muted); margin-bottom: 10px; }
   .panel p { font-size: clamp(18px, 1.8vw, 24px); line-height: 1.2; max-width: 22em; margin-bottom: 1em; }
   .panel ul { list-style: none; font-size: 15px; line-height: 1.6; }
+  .panel { overflow-y: auto; }
+  .panel > div > ul { margin-bottom: 36px; }
+  .panel .cv { border-top: 1px solid #e6e6e6; max-width: 640px; }
+  .panel .cv li { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 8px 0; border-bottom: 1px solid #e6e6e6; line-height: 1.4; }
+  .panel .cv li > span:first-child .meta { display: block; margin-top: 2px; }
+  .panel .cv .meta { color: var(--muted); }
+  .panel .cv li > span:last-child { text-align: right; }
   .panel .close { position: fixed; top: var(--pad); right: var(--pad); z-index: 21; }
 
   /* ---- Motion ---- */
@@ -291,7 +298,7 @@
     <span id="clock">00:00:00 NY</span>
     <a href="#projects">Projects</a>
     <button data-open="info">Information</button>
-    <a href="mailto:you@example.com">Contact</a>
+    <a href="mailto:soobin.jeong0227@gmail.com">Contact</a>
   </nav>
   <button class="burger" aria-label="Menu"><span></span><span></span></button>
 </header>
@@ -300,7 +307,7 @@
   <nav>
     <a href="#projects">Projects</a>
     <button data-open="info">Information</button>
-    <a href="mailto:you@example.com">Contact</a>
+    <a href="mailto:soobin.jeong0227@gmail.com">Contact</a>
   </nav>
   <div class="menu-foot"><span class="clock-m"></span><span>© 2026</span></div>
 </div>
@@ -326,21 +333,44 @@
   <button class="close" data-close>Close</button>
   <div>
     <h2>About</h2>
-    <p>Write a short bio here — your background, what you study at Columbia, and what kind of work interests you.</p>
-    <p>Currently based in New York.</p>
+    <p>Architect licensed in Korea with 5+ years of professional experience spanning concept design through construction documentation across residential and non-residential projects.</p>
+    <p>Three years of BIM experience using Revit for construction documentation and architectural and structural coordination, and two years of experience in architectural design competitions. Currently pursuing an M.S. in Advanced Architectural Design at Columbia GSAPP as an Avery Scholarship recipient.</p>
+    <h2>Contact</h2>
+    <ul>
+      <li>New York, NY</li>
+      <li><a href="mailto:soobin.jeong0227@gmail.com">soobin.jeong0227@gmail.com</a></li>
+      <li><a href="https://www.linkedin.com/in/soobinj0227" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+    </ul>
   </div>
   <div>
     <h2>Education</h2>
-    <ul>
-      <li>Columbia University — M.Arch, 2026–</li>
-      <li>Previous school — Degree, Year</li>
+    <ul class="cv">
+      <li><span>Columbia University GSAPP<span class="meta">M.S. Advanced Architectural Design</span></span><span class="meta">Expected 2027</span></li>
+      <li><span>Inha University, South Korea<span class="meta">Bachelor of Architecture</span></span><span class="meta">2015 – 2021</span></li>
     </ul>
-    <br>
-    <h2>Contact</h2>
-    <ul>
-      <li><a href="mailto:you@example.com">you@example.com</a></li>
-      <li><a href="#">Instagram</a></li>
-      <li><a href="#">LinkedIn</a></li>
+    <h2>Experience</h2>
+    <ul class="cv">
+      <li><span>SIAPLAN Architects &amp; Planners, Seoul<span class="meta">Architectural Designer / BIM Coordinator</span><span class="meta">Technical Session / BIM Team, 2023 – 2026: Revit-based design development and construction documentation; led architectural and structural BIM coordination, including clash detection and model QA/QC.</span><span class="meta">Design Competition Team, 2021 – 2022: competition design development, competition reports and presentation materials.</span></span><span class="meta">2021 – 2026</span></li>
+      <li><span>Changjo Architects, Seoul<span class="meta">Architectural Assistant: facade design development and presentation materials.</span></span><span class="meta">2020</span></li>
+      <li><span>SAMOO Architects &amp; Engineers, Seoul<span class="meta">Architectural Intern: supported the design development and construction documentation team.</span></span><span class="meta">2018</span></li>
+    </ul>
+    <h2>Licenses &amp; Certifications</h2>
+    <ul class="cv">
+      <li><span>Licensed Architect, Republic of Korea</span><span class="meta">2025</span></li>
+      <li><span>Interior Architecture Engineer</span><span class="meta">2023</span></li>
+      <li><span>Construction Safety Engineer</span><span class="meta">2022</span></li>
+      <li><span>Certified BIM Operator Level 2</span><span class="meta">2019</span></li>
+    </ul>
+    <h2>Honors &amp; Awards</h2>
+    <ul class="cv">
+      <li><span>Avery Scholarship, Columbia University GSAPP</span><span class="meta">2026</span></li>
+    </ul>
+    <h2>Skills</h2>
+    <ul class="cv">
+      <li><span>BIM &amp; Documentation</span><span>Revit, AutoCAD</span></li>
+      <li><span>Modeling &amp; Computation</span><span>Rhino, Grasshopper, SketchUp, Houdini</span></li>
+      <li><span>Visualization</span><span>Adobe Creative Suite, Lumion, Twinmotion, D5 Render</span></li>
+      <li><span>Languages</span><span>Korean (native), English</span></li>
     </ul>
   </div>
 </section>
