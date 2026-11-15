@@ -185,6 +185,9 @@
   .panel ul { list-style: none; font-size: 15px; line-height: 1.6; }
   .panel { overflow-y: auto; }
   .panel > div > ul { margin-bottom: 36px; }
+  /* About: first paragraph is the lead, second reads as body text under it */
+  .panel p { text-wrap: pretty; }
+  .panel p.body { font-size: 16px; line-height: 1.45; max-width: 36em; margin-bottom: 36px; }
   .panel .cv { border-top: 1px solid #e6e6e6; max-width: 640px; }
   .panel .cv li { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 8px 0; border-bottom: 1px solid #e6e6e6; line-height: 1.4; }
   .panel .cv li > span:first-child .meta { display: block; margin-top: 2px; }
@@ -334,7 +337,7 @@
   <div>
     <h2>About</h2>
     <p>Architect licensed in Korea with 5+ years of professional experience spanning concept design through construction documentation across residential and non-residential projects.</p>
-    <p>Three years of BIM experience using Revit for construction documentation and architectural and structural coordination, and two years of experience in architectural design competitions. Currently pursuing an M.S. in Advanced Architectural Design at Columbia GSAPP as an Avery Scholarship recipient.</p>
+    <p class="body">Three years of BIM experience using Revit for construction documentation and architectural and structural coordination, and two years of experience in architectural design competitions. Currently pursuing an M.S. in Advanced Architectural Design at Columbia GSAPP as an Avery Scholarship recipient.</p>
     <h2>Contact</h2>
     <ul>
       <li>New York, NY</li>
