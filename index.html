@@ -53,18 +53,16 @@
   .reel { overflow: hidden; margin-top: -5vh; padding: 40px 0 48px; cursor: grab; user-select: none; touch-action: pan-y; }
   .reel.dragging { cursor: grabbing; }
   .reel-track { display: flex; gap: var(--gap); width: max-content; will-change: transform; }
-  .reel figure > a { gap: 16px; }
   .reel .ph { position: relative; overflow: hidden; transition: transform .45s cubic-bezier(.2,.7,.3,1); }
   .reel .ph img { height: clamp(240px, 37vh, 440px); width: auto; display: block; transition: filter .45s, transform .45s cubic-bezier(.2,.7,.3,1); }
   .reel .over { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-    color: #fff; font-size: 16px; text-align: center; padding: 16px; opacity: 0; transition: opacity .45s; }
-  .reel .over .meta { font-size: 13px; opacity: .8; }
+    color: #fff; font-size: 18px; text-align: center; padding: 16px; opacity: 0; transition: opacity .45s; }
+  .reel .over .meta { font-size: 14px; opacity: .8; }
   /* hover: grows from the centre, image blurs, name + years appear on it */
   .reel figure:hover { position: relative; z-index: 1; }
   .reel figure:hover .ph { transform: scale(1.07); }
-  .reel figure:hover .ph img { filter: blur(6px) brightness(.7); transform: scale(1.06); }
+  .reel figure:hover .ph img { filter: blur(3px) brightness(.75); transform: scale(1.06); }
   .reel figure:hover .over { opacity: 1; }
-  .reel figcaption .meta { color: var(--muted); margin-right: 6px; }
   /* Projects page (#projects): intro + grid; home: intro + reel */
   body.view-projects .reel { display: none; }
   body:not(.view-projects) #project-list { display: none; }
@@ -739,7 +737,7 @@
   const reel = document.querySelector(".reel"), track = reel.querySelector(".reel-track");
   const thumbs = PROJECTS.flatMap(s => s.items).filter(it => it.src && !/\.mp4$/i.test(it.src));
   const years = Object.fromEntries(PROJECTS.flatMap(s => s.projects).map(p => [p[0], p[2].replace("–", " – ")]));
-  const fig = (it, i) => `<figure>${link(it.name, `<div class="ph"><img src="${it.src}" alt="${it.name}" draggable="false"><div class="over"><span>${it.name}</span><span class="meta">${years[it.name] || ""}</span></div></div><figcaption><span class="meta">( ${String(i + 1).padStart(2, "0")} )</span>${it.name}</figcaption>`)}</figure>`;
+  const fig = (it, i) => `<figure>${link(it.name, `<div class="ph"><img src="${it.src}" alt="${it.name}" draggable="false"><div class="over"><span>${it.name}</span><span class="meta">${years[it.name] || ""}</span></div></div>`)}</figure>`;
   track.innerHTML = thumbs.map(fig).join("") + thumbs.map(fig).join("");
   let x = 0, v = 0, drag = null, moved = 0;
   const speed = 0.35; // px per frame when idle
