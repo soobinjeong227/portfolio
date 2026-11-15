@@ -733,7 +733,7 @@
   const fig = (it, i) => `<figure>${link(it.name, `<img src="${it.src}" alt="${it.name}" draggable="false"><figcaption><span class="meta">( ${String(i + 1).padStart(2, "0")} )</span>${it.name}</figcaption>`)}</figure>`;
   track.innerHTML = thumbs.map(fig).join("") + thumbs.map(fig).join("");
   let x = 0, v = 0, drag = null, moved = 0;
-  const speed = 0.25; // px per frame when idle
+  const speed = 0.35; // px per frame when idle
   (function frame() {
     const half = track.scrollWidth / 2;
     if (!drag) { x -= speed + v; v *= 0.94; }
