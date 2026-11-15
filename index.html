@@ -55,7 +55,8 @@
     display: flex; justify-content: space-between; align-items: center;
     padding: 8px 0;
   }
-  .project-title { display: flex; align-items: center; gap: 4px; }
+  .section-heading { font-size: clamp(22px, 2.4vw, 32px); font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; padding-bottom: 12px; }
+  .project-title { display: flex; align-items: center; gap: 4px; font-size: 14px; }
   .project-title .meta { color: var(--muted); }
   .toggle {
     width: 18px; height: 18px; margin-left: 6px;
@@ -108,7 +109,7 @@
   .detail-head h1 { font-size: clamp(28px, 3.4vw, 46px); font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; margin-top: -0.155em; }
   /* dl margin puts the first info row's cap top level with the year under the title (0.895 = title line box minus its trim; 4.75px = year margin plus cap offsets) */
   .detail-head h1 .meta { display: block; margin-top: 8px; font-size: 15px; letter-spacing: 0; color: #666; }
-  .detail-head dl { font-size: 15px; margin-top: calc(0.895 * clamp(28px, 3.4vw, 46px) + 4.75px); display: grid; grid-template-columns: 7em 1fr; gap: 6px 12px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #c8c8c8; }
+  .detail-head dl { font-size: 15px; margin-top: calc(0.895 * clamp(28px, 3.4vw, 46px) + 4.75px); display: grid; grid-template-columns: 8.5em 1fr; gap: 6px 12px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #c8c8c8; }
   .detail-head dt { font-weight: 600; }
   .detail-head p { font-size: 15px; line-height: 1.4; max-width: 36em; margin-bottom: .8em; }
   .detail-hero { margin: 0 calc(-1 * var(--pad)) 56px; }
@@ -329,6 +330,7 @@
   // Each item: { name, src?, ratio? } — name is the caption (project name), src: "images/xxx.jpg" (or .mp4); ratio defaults to "4/3"
   const PROJECTS = [
     {
+      heading: "Professional Works 2021–2026",
       title: "SIAPLAN Architects & Planners", category: "Architectural Designer / BIM Coordinator", year: "2021–2026",
       desc: "Five years at SIAPLAN in Seoul. In the Technical Session / BIM Team (2023–2026), I produced Revit-based design development and construction documentation and led architectural and structural BIM coordination, including clash detection and model QA/QC. In the Design Competition Team (2021–2022), I developed competition designs and led competition reports and presentation materials.",
       projects: [
@@ -655,9 +657,10 @@
     const el = document.createElement("section");
     el.className = "project";
     el.innerHTML = `
+      ${p.heading ? `<h2 class="section-heading">${p.heading}</h2>` : ""}
       <div class="project-bar">
         <div class="project-title">
-          <span>${p.title},</span><span class="meta">${p.category}, ${p.year}</span>
+          <span>${p.title},</span><span class="meta">${p.category}${p.heading ? "" : `, ${p.year}`}</span>
           <button class="toggle" aria-label="Toggle description">+</button>
         </div>
         <div class="density">${densityIcon(2)}${densityIcon(4)}</div>
