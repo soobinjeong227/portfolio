@@ -490,7 +490,7 @@
         { name: "YUHAN_03.JPG", src: "images/YUHAN_03.jpg" },
         { name: "YUHAN_05.JPG", src: "images/YUHAN_05.jpg", top: 60 },
         { name: "YUHAN_06.JPG", src: "images/YUHAN_06.jpg", top: 120 },
-        { name: "YUHAN_09.MP4", src: "images/YUHAN_09.mp4", top: 120 },
+        { name: "YUHAN_09.MP4", src: "images/YUHAN_09.mp4", top: 120, width: "85%" },
         { name: "YUHAN_08.JPG", src: "images/YUHAN_08.jpg", top: 120 }
       ]
     },
@@ -834,7 +834,7 @@
         </div>
       </div>
       <div class="detail-media">
-        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside"><div>${im.beside.map(src => `<img class="reveal" src="${src}" alt="">`).join("")}</div><p class="reveal">${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal${im.space ? " space" : ""}"${im.top ? ` style="margin-top:${im.top}px"` : ""}><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}>${/\.mp4$/i.test(im.src) ? `<video src="${im.src}" autoplay muted loop playsinline></video>` : `<img src="${im.src}" alt="${im.name}">`}</div></figure>`).join("")}
+        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside"><div>${im.beside.map(src => `<img class="reveal" src="${src}" alt="">`).join("")}</div><p class="reveal">${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""} reveal">${im.text}</p>` : `<figure class="reveal${im.space ? " space" : ""}"${im.top || im.width ? ` style="${im.top ? `margin-top:${im.top}px;` : ""}${im.width ? `width:${im.width};justify-self:center` : ""}"` : ""}><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}>${/\.mp4$/i.test(im.src) ? `<video src="${im.src}" autoplay muted loop playsinline></video>` : `<img src="${im.src}" alt="${im.name}">`}</div></figure>`).join("")}
       </div>
       ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
     home.hidden = true; detail.hidden = false;
