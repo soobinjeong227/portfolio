@@ -149,6 +149,8 @@
   .detail-media figure { position: relative; }
   .detail-media .media-note { position: absolute; top: calc(7.84% - 0.3em); left: -5.263%; width: 38%; font-size: 15px; line-height: 1.4; hyphens: none; text-wrap: pretty; }
   /* right-side note: top 3.1% = where YUHAN_11 drawing starts; width matches the left note's column */
+  /* captions over a multi-panel video; [text, left%, top%] measured from the video frame */
+  .detail-media .media-label { position: absolute; margin-top: 8px; font-size: 13px; color: #666; white-space: nowrap; }
   .detail-media .media-note.r { top: calc(3.1% - 0.3em); left: auto; right: 4%; width: 42.5%; }
   /* images pushed to the right, with their text above them */
   .detail-media .beside { display: grid; grid-template-columns: 68% 1fr; gap: 24px; align-items: start; }
@@ -500,7 +502,7 @@
         { text: "The project is organized around the interplay between exterior and interior spaces. Outdoor gardens create moments of rest and movement within the dense city, mediating between the urban context and the building through gradual, continuous transitions. At the center, an open architectural core accommodates diverse activities and users, functioning as a shared platform that connects the corporation and the local community.", left: true, right: true },
         { name: "YUHAN_06.JPG", src: "images/YUHAN_06.jpg", top: 120, width: "85%" },
         { name: "YUHAN_11.JPG", src: "images/YUHAN_11.jpg", top: 50, width: "85%" , noteRight: true, note: "Working in Revit allowed the existing structure and the new steel framing to be coordinated within a single model. Retained columns and slabs were clearly distinguished from added members, making the scope of intervention legible at a glance. All drawings were generated from this one model, so every change stayed consistent." },
-        { name: "YUHAN_09.MP4", src: "images/YUHAN_09.mp4", top: 60, width: "85%" },
+        { name: "YUHAN_09.MP4", src: "images/YUHAN_09.mp4", top: 60, width: "85%", labels: [["Existing Building", 0.27, 47.8], ["Existing + Demolition", 51.5, 47.8], ["Completed Building", 0.27, 96.4], ["Exterior + Interior", 51.5, 96.4]] },
         { name: "YUHAN_08.JPG", src: "images/YUHAN_08.jpg", top: 120 }
       ]
     },
@@ -844,7 +846,7 @@
         </div>
       </div>
       <div class="detail-media">
-        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside"><div>${im.beside.map(src => `<img class="reveal" src="${src}" alt="">`).join("")}</div><p class="reveal">${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""}${im.right ? " r" : ""} reveal">${im.text}</p>` : `<figure class="reveal${im.space ? " space" : ""}"${im.top || im.width ? ` style="${im.top ? `margin-top:${im.top}px;` : ""}${im.width ? `width:${im.width};justify-self:${im.right ? "end" : "center"}` : ""}"` : ""}><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}>${/\.mp4$/i.test(im.src) ? `<video src="${im.src}" autoplay muted loop playsinline></video>` : `<img src="${im.src}" alt="${im.name}">`}</div>${im.note ? `<p class="media-note${im.noteRight ? " r" : ""}">${im.note}</p>` : ""}</figure>`).join("")}
+        ${pg.images.slice(1).map(im => im.beside ? `<div class="beside"><div>${im.beside.map(src => `<img class="reveal" src="${src}" alt="">`).join("")}</div><p class="reveal">${im.text}</p></div>` : im.text ? `<p class="media-text${im.left ? " left" : ""}${im.right ? " r" : ""} reveal">${im.text}</p>` : `<figure class="reveal${im.space ? " space" : ""}"${im.top || im.width ? ` style="${im.top ? `margin-top:${im.top}px;` : ""}${im.width ? `width:${im.width};justify-self:${im.right ? "end" : "center"}` : ""}"` : ""}><div class="media"${im.ratio ? ` style="aspect-ratio:${im.ratio}"` : ""}>${/\.mp4$/i.test(im.src) ? `<video src="${im.src}" autoplay muted loop playsinline></video>` : `<img src="${im.src}" alt="${im.name}">`}</div>${im.note ? `<p class="media-note${im.noteRight ? " r" : ""}">${im.note}</p>` : ""}${(im.labels || []).map(l => `<span class="media-label" style="left:${l[1]}%;top:${l[2]}%">${l[0]}</span>`).join("")}</figure>`).join("")}
       </div>
       ${allNames.length > 1 ? `<a class="next" href="#${slug(next)}"><span class="meta">Next project</span><span>${next} →</span></a>` : ""}`;
     home.hidden = true; detail.hidden = false;
