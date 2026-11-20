@@ -47,7 +47,7 @@
     display: flex; align-items: center;
     padding: 80px var(--pad) 40px;
   }
-  .intro p { font-size: clamp(22px, 2.6vw, 34px); line-height: 1.15; max-width: 16em; letter-spacing: -0.01em; }
+  .intro p { font-size: clamp(22px, 1.45vw, 28px); font-weight: 500; line-height: 1.1; max-width: 18em; letter-spacing: -0.02em; }
 
   /* Home reel: thumbnails drift sideways in a loop; drag, wheel or arrow keys move it */
   .reel { overflow: hidden; margin-top: calc(-5vh + 10px); padding: 40px 0 48px; cursor: grab; user-select: none; touch-action: pan-y; }
@@ -73,9 +73,9 @@
     display: flex; justify-content: space-between; align-items: center;
     padding: 8px 0;
   }
-  .section-heading { font-size: clamp(16px, 1.35vw, 19px); font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
+  .section-heading { font-size: clamp(18px, 1.15vw, 22px); font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
   .section-heading + .project-bar { padding-top: 3px; }
-  .project-title { display: flex; align-items: center; gap: 4px; font-size: 14px; }
+  .project-title { display: flex; align-items: center; gap: 4px; font-size: clamp(15px, 0.95vw, 18px); letter-spacing: -0.01em; }
   .project-title .meta { color: var(--muted); }
   .toggle {
     width: 18px; height: 18px; margin-left: 6px;
@@ -268,7 +268,7 @@
     header > nav { display: none; }
     .burger { display: block; }
     .intro { min-height: 55vh; }
-    .intro p { font-size: 24px; max-width: 18em; }
+    .intro p { font-size: 24px; }
     .project-bar { top: 50px; }
     .density { display: none; }
     .grid { grid-template-columns: repeat(2, 1fr) !important; }
