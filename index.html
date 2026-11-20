@@ -145,9 +145,9 @@
   .detail-media .media-text { width: 40%; margin: -8px 0 32px auto; font-size: 15px; line-height: 1.4; }
   .detail-media .media-text.left { width: 48%; margin: -8px auto 32px 0; }
   .detail-media .media-text.left.r { margin: -8px 0 32px auto; }
-  /* text in the empty top-left corner of a right-aligned image (left edge = page column; 95% figure -> -5.263%) */
+  /* text in the empty top-left corner of a right-aligned image (left edge = page column; 95% figure -> -5.263%; top 7.84% = where YUHAN_03 drawing starts) */
   .detail-media figure { position: relative; }
-  .detail-media .media-note { position: absolute; top: 0; left: -5.263%; width: 38%; font-size: 15px; line-height: 1.4; }
+  .detail-media .media-note { position: absolute; top: calc(7.84% - 0.3em); left: -5.263%; width: 38%; font-size: 15px; line-height: 1.4; text-align: justify; hyphens: auto; }
   /* images pushed to the right, with their text above them */
   .detail-media .beside { display: grid; grid-template-columns: 68% 1fr; gap: 24px; align-items: start; }
   .detail-media .beside p { font-size: 15px; line-height: 1.4; margin-top: -0.3em; }
