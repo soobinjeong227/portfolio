@@ -408,7 +408,7 @@
         { name: "Jeju Jungmun Integrated Resort", src: "images/JEJU_01.jpg" },
         { name: "Incheon Museum Park", src: "images/INCHEON_01.jpg" },
         { name: "Hanwha Systems Gumi C-Project", src: "images/HANWHA_01.jpg" },
-        { name: "Gyeongsangbuk-do Agricultural Technology Institute", src: "images/GBATI_01.jpg" },
+        { name: "Gyeongsangbuk-do Agricultural Technology Institute", src: "images/GBATI_01.jpg", hover: "Gyeongsangbuk-do<br>Agricultural Technology Institute" },
         { name: "Korea University of Energy and Technology", src: "images/KENTECH_01.jpg" },
         { name: "Seoul National University Cultural Center", src: "images/SNU_01.jpg" },
         { name: "National Museum of Korean Literature", src: "images/NMKL_01.jpg" },
@@ -778,7 +778,7 @@
   const thumbs = PROJECTS.flatMap(s => s.items).filter(it => it.src && !/\.mp4$/i.test(it.src));
   // hover line, e.g. "Professional Work, 2024 – 2025" (kind from the section heading's first word)
   const years = Object.fromEntries(PROJECTS.flatMap(s => s.projects.map(p => [p[0], [s.heading.split(" ")[0] + " Work", p[2].replace("–", " – ")].filter(Boolean).join(", ")])));
-  const fig = (it, i) => `<figure>${link(it.name, `<div class="ph"><img src="${it.src}" alt="${it.name}" draggable="false"><div class="over"><span>${it.name}</span><span class="meta">${years[it.name] || ""}</span></div></div>`)}</figure>`;
+  const fig = (it, i) => `<figure>${link(it.name, `<div class="ph"><img src="${it.src}" alt="${it.name}" draggable="false"><div class="over"><span>${it.hover || it.name}</span><span class="meta">${years[it.name] || ""}</span></div></div>`)}</figure>`;
   track.innerHTML = thumbs.map(fig).join("") + thumbs.map(fig).join("");
   let x = 0, v = 0, drag = null, moved = 0;
   const speed = 0.35; // px per frame when idle
