@@ -845,7 +845,7 @@
     detail.innerHTML = `
       ${pg.images[0] ? `<div class="detail-hero"><img src="${pg.images[0].src}" alt="${pg.images[0].name}"></div>` : ""}
       <div class="detail-head">
-        <h1>${name}<span class="meta">${(pg.info.find(([k]) => k === "Role") || [, row[2]])[1]}</span></h1>
+        <h1>${name}<span class="meta">${(r => r ? "Role: " + r[1] : row[2])(pg.info.find(([k]) => k === "Role"))}</span></h1>
         <div>
           <dl>${pg.info.filter(([k]) => k !== "Role").map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
           ${pg.text.map(t => `<p>${t}</p>`).join("")}
